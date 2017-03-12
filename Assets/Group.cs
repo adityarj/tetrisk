@@ -11,15 +11,27 @@ public class Group : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (gameObject.CompareTag("falling")) {
+			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+				transform.position += new Vector3(-1, 0, 0);
+			}
+			if (Input.GetKeyDown(KeyCode.RightArrow)) {
+				transform.position += new Vector3(1, 0, 0);
+			}
+			if (Input.GetKeyDown(KeyCode.UpArrow)) {
+				transform.Rotate(0,0,-90);
+			}
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-		Debug.Log ("collsion");
+		if (collision.collider.CompareTag("wall")) {
+			return;
+		}
 		if (gameObject.CompareTag("falling")) {
-			Debug.Log ("falling object");
 			gameObject.tag = "Untagged";
 			FindObjectOfType<Spawner>().spawnNext();
 		}
 	}
+		
 }
