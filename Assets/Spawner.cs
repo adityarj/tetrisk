@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spwaner : MonoBehaviour {
+public class Spawner : MonoBehaviour {
 
 	public GameObject[] groups;
 
@@ -10,13 +10,14 @@ public class Spwaner : MonoBehaviour {
 	void Start () {
 		spawnNext();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
 	public void spawnNext() {
+		Debug.Log ("Creating next item");
 		int i = Random.Range (0, groups.Length);
 
 		// Spawn Group at current position
