@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Group : MonoBehaviour {
 
+	private Rigidbody2D rb;
+	public int fallVelocity = 1;
+
 	// Use this for initialization
 	void Start () {
-		
+		rb = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (gameObject.CompareTag("falling")) {
+			rb.velocity = new Vector3(0,-fallVelocity,0);
 			if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 				transform.position += new Vector3(-1, 0, 0);
 			}
