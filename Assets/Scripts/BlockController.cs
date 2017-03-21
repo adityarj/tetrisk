@@ -9,11 +9,15 @@ public class BlockController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Debug.Log ("BC Start() called");
-		rb = GetComponent<Rigidbody2D> ();
+		rb = this.GetComponent<Rigidbody2D> ();
 		rb.velocity = new Vector3 (0, 0, 0);
 	}
 
 	public void setVelocity(Vector3 vel) {
+		if (rb == null) {
+			this.rb = GetComponent<Rigidbody2D> ();
+			Debug.Log (rb);
+		}
 		rb.velocity = vel;
 	}
 

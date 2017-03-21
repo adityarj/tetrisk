@@ -38,7 +38,6 @@ public class PlayerController : NetworkBehaviour {
 		activeSquare = Instantiate (randomItemSpawner.getBlock());
 		activeSquare.transform.position = spawnPosition;
 		NetworkServer.SpawnWithClientAuthority (activeSquare,gameObject);
-
 		RpcSyncSpawnedObject (activeSquare);
 		
 	}
@@ -47,11 +46,13 @@ public class PlayerController : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcSyncSpawnedObject(GameObject squareRef) {
 		activeSquare = squareRef;
-		if (isLocalPlayer) {
-			activeBlockControl = activeSquare.GetComponent<BlockController> ();
-			Debug.Log (activeBlockControl.getVelocity ());
-			activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
-		}
+		activeBlockControl = activeSquare.GetComponent<BlockController> ();
+		activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
+	}
+
+	[Command]
+	public void CmdSetRigidBody() {
+		
 	}
 
 	//Check if the left arrow key can exceed the bounderies of the game
@@ -78,6 +79,11 @@ public class PlayerController : NetworkBehaviour {
 
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
+			
+			if (!isServer) {
+				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
+			}
+
 			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 				if (this.checkValidBoundsLeft(activeSquare.transform)) {
 					activeSquare.transform.position += new Vector3 ((float)-0.5, 0, 0);

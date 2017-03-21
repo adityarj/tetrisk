@@ -17,30 +17,40 @@ Platform assembly: C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Dat
 Loading C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.047 seconds
+- Completed reload, in  0.053 seconds
 Platform assembly: C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\HP-PC\Documents\MultiplayerTetrisGame\TetrisGame_Data\Managed\System.dll (this message is harmless)
-desktop: 1920x1080 59Hz; virtual: 4800x1350 at -2400,0
+desktop: 1920x1080 60Hz; virtual: 1536x864 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.394580 ms
+UnloadTime: 1.472413 ms
 BC Start() called
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-(0.0, 0.0, 0.0)
+NullReferenceException: Object reference not set to an instance of an object
+  at PlayerController.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at PlayerController.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at PlayerController.Update () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+GroupT(Clone) (UnityEngine.Rigidbody2D)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 BC Start() called
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Log: connection {1} has been disconnected by timeout; address {::ffff:127.0.0.1:57460}
-ServerDisconnected due to error: Timeout
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 4090 -> priority: 1 
+  Thread -> id: 40c4 -> priority: 1 
