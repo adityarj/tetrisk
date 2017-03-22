@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.Company.ProductName
+  bundleIdentifier: com.vivify.tetrisk
   bundleVersion: 1.0
   preloadedAssets: []
   metroInputSource: 0
@@ -461,9 +461,9 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
     UNet: 1
-  cloudProjectId: 98c8d1d4-39e1-4727-8824-572377a52cc2
+  cloudProjectId: 5a9548b1-9413-40d4-bf74-08bde48ddefc
   projectName: MultiplayerTetrisGame
-  organizationId: adityarj
+  organizationId: iloveneh
   cloudEnabled: 0
