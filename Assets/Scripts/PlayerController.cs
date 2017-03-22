@@ -11,6 +11,7 @@ public class PlayerController : NetworkBehaviour {
 	private RandomItemSpawner randomItemSpawner;
 	private double[] bounds = new double[2];
 	private float lastTime = 0;
+	private Touch initialTouch;
 
 	// Use this for initialization
 	void Start () {
@@ -84,19 +85,43 @@ public class PlayerController : NetworkBehaviour {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 			}
 
-			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-				if (this.checkValidBoundsLeft(activeSquare.transform)) {
-					activeSquare.transform.position += new Vector3 ((float)-0.5, 0, 0);
+			if (Input.touchCount > 0) {
+
+				foreach (Touch t in Input.touches) {
+
+					// handle rotation
+					if (t.phase == TouchPhase.Began) {
+						initialTouch = t;
+
+						if (this.checkValidBoundsLeft (activeSquare.transform) && this.checkValidBoundsRight (activeSquare.transform)) {
+							activeSquare.transform.Rotate (0, 0, -90);
+						}
+
+					// handle lateral movement
+					} else if (t.phase == TouchPhase.Moved) {
+						// user swiped left
+						if (t.position.x - initialTouch.position.x < 0) {
+							if (this.checkValidBoundsLeft (activeSquare.transform)) {
+								activeSquare.transform.position += new Vector3 ((float)-0.5, 0, 0);
+							}
+
+						// user swiped right
+						} else if (t.position.x - initialTouch.position.x > 0) {
+							if (this.checkValidBoundsRight (activeSquare.transform)) {
+								activeSquare.transform.position += new Vector3 ((float)0.5, 0, 0);
+							}
+
+						// user swiped up
+						} else if (t.position.y - initialTouch.position.y > 0) {
+							// handle up?
+
+						// user swiped down
+						} else if (t.position.y - initialTouch.position.y < 0) {
+							activeSquare.transform.position += new Vector3 (0, (float)-0.5, 0);
+							lastTime = Time.time;
+						}
+					}
 				}
-			} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-				if (this.checkValidBoundsRight(activeSquare.transform)) {
-					activeSquare.transform.position += new Vector3 ((float)0.5, 0, 0);
-				}
-			} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-				//Handle Up Arrow
-			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-				activeSquare.transform.position+= new Vector3(0,(float)-0.5,0);
-				lastTime = Time.time;
 			}
 		}
 	}
