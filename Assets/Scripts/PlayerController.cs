@@ -84,6 +84,22 @@ public class PlayerController : NetworkBehaviour {
 			if (!isServer) {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 			}
+			if (this.checkValidBoundsLeft(activeSquare.transform)) {
+				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+					activeSquare.transform.position += new Vector3((float)-0.5, 0, 0);
+				}	
+			}
+			if (this.checkValidBoundsRight(activeSquare.transform)) {
+				if (Input.GetKeyDown(KeyCode.RightArrow)) {
+					activeSquare.transform.position += new Vector3((float)0.5, 0, 0);
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.UpArrow)) {
+				activeSquare.transform.Rotate(0,0,-90);
+				if (!(this.checkValidBoundsLeft(activeSquare.transform) && this.checkValidBoundsRight(activeSquare.transform))){
+					activeSquare.transform.Rotate(0,0,90);
+				}
+			}
 
 			if (Input.touchCount > 0) {
 
