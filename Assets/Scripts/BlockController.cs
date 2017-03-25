@@ -36,7 +36,7 @@ public class BlockController : MonoBehaviour {
 		}
 		if (gameObject.CompareTag("falling")) {
 			gameObject.tag = "Untagged";
-			FindObjectOfType<PlayerController>().SpawnSquare();
+			FindObjectOfType<PlayerController>().SpawnBlock();
 		}
 	}
 }

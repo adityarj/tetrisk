@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomItemSpawner : MonoBehaviour {
+public class BlockSpawner : MonoBehaviour {
 	
 	public GameObject[] blockList;
 

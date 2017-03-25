@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour {
 
-	private GameObject activeSquare;
+	private GameObject activeBlock;
 	private BlockController activeBlockControl;
 	private Vector3 spawnPosition;
-	private RandomItemSpawner randomItemSpawner;
+	private BlockSpawner blockSpawner;
 	private double[] bounds = new double[2];
 	private float lastTime = 0;
 	private Touch initialTouch;
@@ -21,33 +21,33 @@ public class PlayerController : NetworkBehaviour {
 		bounds [1] = spawnPosition.x + 3;
 		bounds [0] = spawnPosition.x - 3;
 
-		randomItemSpawner = FindObjectOfType<RandomItemSpawner> ();
+		blockSpawner = FindObjectOfType<BlockSpawner> ();
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
-			SpawnSquare ();
+			SpawnBlock ();
 		}
 	}
 
-	//This function exists in case more code needs to be put in SpawnSquare()
-	public void SpawnSquare() {
-		CmdSpawnSquare ();
+	//This function exists in case more code needs to be put in SpawnBlock()
+	public void SpawnBlock() {
+		CmdSpawnBlock ();
 	}
 
-	//Command to the server to spawn a square over the network
+	//Command to the server to spawn a block over the network
 	[Command]
-	public void CmdSpawnSquare() {
-		activeSquare = Instantiate (randomItemSpawner.getBlock());
-		activeSquare.transform.position = spawnPosition;
-		NetworkServer.SpawnWithClientAuthority (activeSquare,gameObject);
-		RpcSyncSpawnedObject (activeSquare);
+	public void CmdSpawnBlock() {
+		activeBlock = Instantiate (blockSpawner.getBlock());
+		activeBlock.transform.position = spawnPosition;
+		NetworkServer.SpawnWithClientAuthority (activeBlock,gameObject);
+		RpcSyncSpawnedObject (activeBlock);
 		
 	}
 
 	//Client code to receive the instantiated object from the server
 	[ClientRpc]
-	public void RpcSyncSpawnedObject(GameObject squareRef) {
-		activeSquare = squareRef;
-		activeBlockControl = activeSquare.GetComponent<BlockController> ();
+	public void RpcSyncSpawnedObject(GameObject blockRef) {
+		activeBlock = blockRef;
+		activeBlockControl = activeBlock.GetComponent<BlockController> ();
 		activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 	}
 
@@ -84,20 +84,20 @@ public class PlayerController : NetworkBehaviour {
 			if (!isServer) {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 			}
-			if (this.checkValidBoundsLeft(activeSquare.transform)) {
+			if (this.checkValidBoundsLeft(activeBlock.transform)) {
 				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-					activeSquare.transform.position += new Vector3((float)-0.5, 0, 0);
+					activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
 				}	
 			}
-			if (this.checkValidBoundsRight(activeSquare.transform)) {
+			if (this.checkValidBoundsRight(activeBlock.transform)) {
 				if (Input.GetKeyDown(KeyCode.RightArrow)) {
-					activeSquare.transform.position += new Vector3((float)0.5, 0, 0);
+					activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
 				}
 			}
 			if (Input.GetKeyDown(KeyCode.UpArrow)) {
-				activeSquare.transform.Rotate(0,0,-90);
-				if (!(this.checkValidBoundsLeft(activeSquare.transform) && this.checkValidBoundsRight(activeSquare.transform))){
-					activeSquare.transform.Rotate(0,0,90);
+				activeBlock.transform.Rotate(0,0,-90);
+				if (!(this.checkValidBoundsLeft(activeBlock.transform) && this.checkValidBoundsRight(activeBlock.transform))){
+					activeBlock.transform.Rotate(0,0,90);
 				}
 			}
 
@@ -109,22 +109,22 @@ public class PlayerController : NetworkBehaviour {
 					if (t.phase == TouchPhase.Began) {
 						initialTouch = t;
 
-						if (this.checkValidBoundsLeft (activeSquare.transform) && this.checkValidBoundsRight (activeSquare.transform)) {
-							activeSquare.transform.Rotate (0, 0, -90);
+						if (this.checkValidBoundsLeft (activeBlock.transform) && this.checkValidBoundsRight (activeBlock.transform)) {
+							activeBlock.transform.Rotate (0, 0, -90);
 						}
 
 					// handle lateral movement
 					} else if (t.phase == TouchPhase.Moved) {
 						// user swiped left
 						if (t.position.x - initialTouch.position.x < 0) {
-							if (this.checkValidBoundsLeft (activeSquare.transform)) {
-								activeSquare.transform.position += new Vector3 ((float)-0.5, 0, 0);
+							if (this.checkValidBoundsLeft (activeBlock.transform)) {
+								activeBlock.transform.position += new Vector3 ((float)-0.5, 0, 0);
 							}
 
 						// user swiped right
 						} else if (t.position.x - initialTouch.position.x > 0) {
-							if (this.checkValidBoundsRight (activeSquare.transform)) {
-								activeSquare.transform.position += new Vector3 ((float)0.5, 0, 0);
+							if (this.checkValidBoundsRight (activeBlock.transform)) {
+								activeBlock.transform.position += new Vector3 ((float)0.5, 0, 0);
 							}
 
 						// user swiped up
@@ -133,7 +133,7 @@ public class PlayerController : NetworkBehaviour {
 
 						// user swiped down
 						} else if (t.position.y - initialTouch.position.y < 0) {
-							activeSquare.transform.position += new Vector3 (0, (float)-0.5, 0);
+							activeBlock.transform.position += new Vector3 (0, (float)-0.5, 0);
 							lastTime = Time.time;
 						}
 					}
