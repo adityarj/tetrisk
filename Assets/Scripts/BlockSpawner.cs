@@ -5,9 +5,14 @@ using UnityEngine;
 public class BlockSpawner : MonoBehaviour {
 	
 	public GameObject[] blockList;
+	private int randIndex;
 
 	public GameObject getBlock() {
-		int randIndex = Random.Range (0, blockList.Length);
+		randIndex = Random.Range (0, blockList.Length);
+		return blockList [randIndex];
+	}
+
+	public GameObject getSameBlock() {
 		return blockList [randIndex];
 	}
 

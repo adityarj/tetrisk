@@ -30,13 +30,18 @@ public class PlayerController : NetworkBehaviour {
 
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
+		activeBlock = Instantiate(blockSpawner.getBlock());
 		CmdSpawnBlock ();
+	}
+
+	public void SpawnSameBlock() {
+		activeBlock = Instantiate (blockSpawner.getSameBlock());
+		CmdSpawnBlock();
 	}
 
 	//Command to the server to spawn a block over the network
 	[Command]
 	public void CmdSpawnBlock() {
-		activeBlock = Instantiate (blockSpawner.getBlock());
 		activeBlock.transform.position = spawnPosition;
 		NetworkServer.SpawnWithClientAuthority (activeBlock,gameObject);
 		RpcSyncSpawnedObject (activeBlock);

@@ -7,7 +7,7 @@ public class Destoryer : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		// collider is square, so we need to check the tag of the parent object
 		if (other.transform.parent.gameObject.tag == "falling") {
-			FindObjectOfType<PlayerController>().SpawnBlock();
+			FindObjectOfType<PlayerController>().SpawnSameBlock();
 		}
 		// destory parent(group)
 		Destroy(other.transform.parent.gameObject);
