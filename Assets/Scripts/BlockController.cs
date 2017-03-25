@@ -10,6 +10,7 @@ public class BlockController : MonoBehaviour {
 	void Start () {
 		Debug.Log ("BC Start() called");
 		rb = this.GetComponent<Rigidbody2D> ();
+		gameObject.tag = "falling";
 		rb.velocity = new Vector3 (0, 0, 0);
 	}
 
@@ -27,5 +28,15 @@ public class BlockController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (collision.collider.CompareTag("wall")) {
+			return;
+		}
+		if (gameObject.CompareTag("falling")) {
+			gameObject.tag = "Untagged";
+			FindObjectOfType<PlayerController>().SpawnSquare();
+		}
 	}
 }
