@@ -30,18 +30,17 @@ public class PlayerController : NetworkBehaviour {
 
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
-		activeBlock = Instantiate(blockSpawner.getBlock());
 		CmdSpawnBlock ();
 	}
 
 	public void SpawnSameBlock() {
-		activeBlock = Instantiate (blockSpawner.getSameBlock());
 		CmdSpawnBlock();
 	}
 
 	//Command to the server to spawn a block over the network
 	[Command]
 	public void CmdSpawnBlock() {
+		activeBlock = Instantiate(blockSpawner.getBlock());
 		activeBlock.transform.position = spawnPosition;
 		NetworkServer.SpawnWithClientAuthority (activeBlock,gameObject);
 		RpcSyncSpawnedObject (activeBlock);
@@ -53,13 +52,8 @@ public class PlayerController : NetworkBehaviour {
 	public void RpcSyncSpawnedObject(GameObject blockRef) {
 		activeBlock = blockRef;
 		activeBlockControl = activeBlock.GetComponent<BlockController> ();
-		activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 	}
-
-	[Command]
-	public void CmdSetRigidBody() {
 		
-	}
 
 	//Check if the left arrow key can exceed the bounderies of the game
 	public bool checkValidBoundsLeft(Transform transform) {
@@ -85,61 +79,67 @@ public class PlayerController : NetworkBehaviour {
 
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
-			
-			if (!isServer) {
+			if (activeBlockControl != null) {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
-			}
-			if (this.checkValidBoundsLeft(activeBlock.transform)) {
-				if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-					activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
-				}	
-			}
-			if (this.checkValidBoundsRight(activeBlock.transform)) {
-				if (Input.GetKeyDown(KeyCode.RightArrow)) {
-					activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
+
+				if (this.checkValidBoundsLeft(activeBlock.transform)) {
+					if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
+					}	
 				}
-			}
-			if (Input.GetKeyDown(KeyCode.UpArrow)) {
-				activeBlock.transform.Rotate(0,0,-90);
-				if (!(this.checkValidBoundsLeft(activeBlock.transform) && this.checkValidBoundsRight(activeBlock.transform))){
-					activeBlock.transform.Rotate(0,0,90);
+				if (this.checkValidBoundsRight(activeBlock.transform)) {
+					if (Input.GetKeyDown(KeyCode.RightArrow)) {
+						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
+					}
 				}
-			}
+				if (Input.GetKeyDown(KeyCode.UpArrow)) {
+					activeBlock.transform.Rotate(0,0,-90);
+					if (!(this.checkValidBoundsLeft(activeBlock.transform) && this.checkValidBoundsRight(activeBlock.transform))){
+						activeBlock.transform.Rotate(0,0,90);
+					}
+				}
 
-			if (Input.touchCount > 0) {
+				//Spawn block if necessary based on the status player
+				if (activeBlockControl.GetSpawnNext()) {
+					activeBlockControl = null;
+					this.SpawnBlock ();
+				}
 
-				foreach (Touch t in Input.touches) {
+				if (Input.touchCount > 0) {
 
-					// handle rotation
-					if (t.phase == TouchPhase.Began) {
-						initialTouch = t;
+					foreach (Touch t in Input.touches) {
 
-						if (this.checkValidBoundsLeft (activeBlock.transform) && this.checkValidBoundsRight (activeBlock.transform)) {
-							activeBlock.transform.Rotate (0, 0, -90);
-						}
+						// handle rotation
+						if (t.phase == TouchPhase.Began) {
+							initialTouch = t;
 
-					// handle lateral movement
-					} else if (t.phase == TouchPhase.Moved) {
-						// user swiped left
-						if (t.position.x - initialTouch.position.x < 0) {
-							if (this.checkValidBoundsLeft (activeBlock.transform)) {
-								activeBlock.transform.position += new Vector3 ((float)-0.5, 0, 0);
+							if (this.checkValidBoundsLeft (activeBlock.transform) && this.checkValidBoundsRight (activeBlock.transform)) {
+								activeBlock.transform.Rotate (0, 0, -90);
 							}
 
-						// user swiped right
-						} else if (t.position.x - initialTouch.position.x > 0) {
-							if (this.checkValidBoundsRight (activeBlock.transform)) {
-								activeBlock.transform.position += new Vector3 ((float)0.5, 0, 0);
+						// handle lateral movement
+						} else if (t.phase == TouchPhase.Moved) {
+							// user swiped left
+							if (t.position.x - initialTouch.position.x < 0) {
+								if (this.checkValidBoundsLeft (activeBlock.transform)) {
+									activeBlock.transform.position += new Vector3 ((float)-0.5, 0, 0);
+								}
+
+							// user swiped right
+							} else if (t.position.x - initialTouch.position.x > 0) {
+								if (this.checkValidBoundsRight (activeBlock.transform)) {
+									activeBlock.transform.position += new Vector3 ((float)0.5, 0, 0);
+								}
+
+							// user swiped up
+							} else if (t.position.y - initialTouch.position.y > 0) {
+								// handle up?
+
+							// user swiped down
+							} else if (t.position.y - initialTouch.position.y < 0) {
+								activeBlock.transform.position += new Vector3 (0, (float)-0.5, 0);
+								lastTime = Time.time;
 							}
-
-						// user swiped up
-						} else if (t.position.y - initialTouch.position.y > 0) {
-							// handle up?
-
-						// user swiped down
-						} else if (t.position.y - initialTouch.position.y < 0) {
-							activeBlock.transform.position += new Vector3 (0, (float)-0.5, 0);
-							lastTime = Time.time;
 						}
 					}
 				}

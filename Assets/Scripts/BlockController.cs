@@ -5,29 +5,28 @@ using UnityEngine;
 public class BlockController : MonoBehaviour {
 
 	private Rigidbody2D rb;
-
+	private bool spawnSame = false;
+	private bool spawnNext = false;
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("BC Start() called");
 		rb = this.GetComponent<Rigidbody2D> ();
 		gameObject.tag = "falling";
-		rb.velocity = new Vector3 (0, 0, 0);
+	}
+
+	public void SetSpawnNext(bool boolean) {
+		this.spawnNext = boolean;
+	}
+
+	public bool GetSpawnNext() {
+		return spawnNext;
 	}
 
 	public void setVelocity(Vector3 vel) {
-		if (rb == null) {
-			this.rb = GetComponent<Rigidbody2D> ();
-			Debug.Log (rb);
-		}
-		rb.velocity = vel;
+		this.rb.velocity = vel;
 	}
 
 	public Vector3 getVelocity() {
 		return rb.velocity;
-	}
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
@@ -36,7 +35,7 @@ public class BlockController : MonoBehaviour {
 		}
 		if (gameObject.CompareTag("falling")) {
 			gameObject.tag = "Untagged";
-			FindObjectOfType<PlayerController>().SpawnBlock();
+			SetSpawnNext(true);
 		}
 	}
 }
