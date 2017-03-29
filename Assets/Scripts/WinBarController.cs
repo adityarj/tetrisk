@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WinBarController : MonoBehaviour {
-
 	private Rigidbody2D rb;
+	private bool win;
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
@@ -16,20 +16,19 @@ public class WinBarController : MonoBehaviour {
 		
 	}
 
-	public void OnCollisionEnter2D(Collision2D collision) {
-		if (collision.gameObject.CompareTag("falling")) {
+	public void setWin(bool win) {
+		this.win = win;
+	}
 
-			//When the collision happens, ignore it for each and every collider object
-			foreach (Collider2D smallBlock in collision.gameObject.GetComponentsInChildren<Collider2D>()) {
-				Physics2D.IgnoreCollision (smallBlock, gameObject.GetComponent<Collider2D> ());
-			}
-			
-		} else {
+	public bool getWin() {
+		return this.win;
+	}
 
-			//When the collision happens, ignore it for each and every collider object
-			foreach (Collider2D smallBlock in collision.gameObject.GetComponentsInChildren<Collider2D>()) {
-				Physics2D.IgnoreCollision (smallBlock, gameObject.GetComponent<Collider2D> ());
-			}
+	void OnTriggerEnter2D(Collider2D other) {
+		GameObject parentBlock = other.transform.parent.gameObject;
+		if (parentBlock.CompareTag("Untagged")) {
+			setWin(true);
+			Debug.Log("WINNSAFS");
 		}
 	}
 }
