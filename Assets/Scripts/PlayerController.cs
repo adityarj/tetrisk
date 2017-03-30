@@ -69,7 +69,7 @@ public class PlayerController : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnWinBar() {
 		this.localWinBar = Instantiate (WinBarSingleton.getInstance(winBar));
-		this.localWinBar.transform.position = new Vector3 (4, 14, 0);
+		this.localWinBar.transform.position = new Vector3 (5, 14, 0);
 		Debug.Log (this.localWinBar);
 		NetworkServer.Spawn (this.localWinBar);
 	}
@@ -93,6 +93,7 @@ public class PlayerController : NetworkBehaviour {
 		}
 		return true;
 	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -106,16 +107,22 @@ public class PlayerController : NetworkBehaviour {
 						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
 					}	
 				}
+
 				if (this.checkValidBoundsRight(activeBlock.transform)) {
 					if (Input.GetKeyDown(KeyCode.RightArrow)) {
 						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
 					}
 				}
+
 				if (Input.GetKeyDown(KeyCode.UpArrow)) {
 					activeBlock.transform.Rotate(0,0,-90);
 					if (!(this.checkValidBoundsLeft(activeBlock.transform) && this.checkValidBoundsRight(activeBlock.transform))){
 						activeBlock.transform.Rotate(0,0,90);
 					}
+				}
+
+				if (Input.GetKeyDown (KeyCode.DownArrow)) {
+					activeBlock.transform.position += new Vector3 (0,(float) -0.5, 0);
 				}
 
 				//Spawn block if necessary based on the status player
