@@ -12,6 +12,12 @@ public class PlayerController : NetworkBehaviour {
 	private double[] bounds = new double[2];
 	private float lastTime = 0;
 	private Touch initialTouch;
+	Camera playerCam;
+
+	void Awake(){
+		playerCam = GetComponentInChildren<Camera> ();
+		playerCam.gameObject.SetActive (false);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +32,10 @@ public class PlayerController : NetworkBehaviour {
 		if (isLocalPlayer) {
 			SpawnBlock ();
 		}
+	}
+
+	public override void OnStartLocalPlayer(){
+		playerCam.gameObject.SetActive (true);
 	}
 
 	//This function exists in case more code needs to be put in SpawnBlock()
