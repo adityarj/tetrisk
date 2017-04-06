@@ -25,6 +25,7 @@ public class PlayerController : NetworkBehaviour {
 		bounds [1] = spawnPosition.x + 3;
 		bounds [0] = spawnPosition.x - 3;
 
+
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
@@ -39,6 +40,11 @@ public class PlayerController : NetworkBehaviour {
 		}
 	}
 
+	public override void OnStartClient ()
+	{
+		base.OnStartClient ();
+		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveMessage);
+	}
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
 		CmdSpawnBlock ();
@@ -94,6 +100,12 @@ public class PlayerController : NetworkBehaviour {
 		return true;
 	}
 
+	//When a message is received
+	public void OnReceiveMessage(NetworkMessage networkMessage) {
+		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
+		Debug.Log ("Player " + endgame.player + " won");
+	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -122,7 +134,7 @@ public class PlayerController : NetworkBehaviour {
 				}
 
 				if (Input.GetKeyDown (KeyCode.DownArrow)) {
-					activeBlock.transform.position += new Vector3 (0,(float) -0.5, 0);
+					activeBlockControl.applyDownwardForce ();
 				}
 
 				//Spawn block if necessary based on the status player

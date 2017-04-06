@@ -55,10 +55,15 @@ public class WinBarController : NetworkBehaviour {
 					EndMessage endMessage;
 					endMessage.finalWords = "Player " + i + " won";
 					Debug.Log(endMessage.finalWords);
-					//NetworkServer.SendToAll ((short) 500,endMessage);
+					EndGameMessage endgame = new EndGameMessage ();
+
+					endgame.player = i;
+					endgame.message = "What a baller";
+
+					NetworkServer.SendToAll (7999, endgame);
 				}
 			}
-			CmdGameOver ();
+			//CmdGameOver ();
 		}
 	}
 }
