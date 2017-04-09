@@ -22,6 +22,12 @@ public class PlayerController : NetworkBehaviour {
 	[SerializeField]
 	private GameObject winBar;
 	private GameObject localWinBar;
+
+	//Related to PowerUps
+	private GameObject powerUp;
+	private PowerUpSpawner powerUpSpawner;
+	private bool powerUpPresent;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -32,10 +38,43 @@ public class PlayerController : NetworkBehaviour {
 
 
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
+		powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
 			SpawnBlock ();
+			SpawnPowerUp();
 		}
+
+	}
+
+	private void SpawnPowerUp() {
+		StartCoroutine(WaitAndSpawnPowerUp(5f));
+	}
+
+	IEnumerator WaitAndSpawnPowerUp(float time) {
+		yield return new WaitForSeconds(time);
+		if (!powerUpPresent){
+			powerUpPresent = true;
+			CmdSpawnPowerUp();
+		}
+		SpawnPowerUp();
+	}
+
+	//Command to the server to spawn a power-up over the network
+	[Command]
+	public void CmdSpawnPowerUp() {
+		powerUp = Instantiate(powerUpSpawner.getPowerUp());
+		// TODO make position random
+		powerUp.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (2, 6, 0);
+		NetworkServer.SpawnWithClientAuthority (powerUp,gameObject);
+		RpcSyncSpawnedPowerUp (powerUp);
+	}
+
+	[ClientRpc]
+	public void RpcSyncSpawnedPowerUp(GameObject powerUpRef) {
+		powerUp = powerUpRef;
+		Debug.Log("OK");
+//		activeBlockControl = activeBlock.GetComponent<BlockController> ();
 	}
 
 	//Called when the server is started
