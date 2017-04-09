@@ -25,6 +25,7 @@ public class PlayerController : NetworkBehaviour {
 
 	//Related to PowerUps
 	private GameObject powerUp;
+	private PowerUpController powerUpControl;
 	private PowerUpSpawner powerUpSpawner;
 	private bool powerUpPresent;
 
@@ -73,8 +74,7 @@ public class PlayerController : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcSyncSpawnedPowerUp(GameObject powerUpRef) {
 		powerUp = powerUpRef;
-		Debug.Log("OK");
-//		activeBlockControl = activeBlock.GetComponent<BlockController> ();
+		powerUpControl = powerUp.GetComponent<PowerUpController> ();
 	}
 
 	//Called when the server is started
@@ -159,6 +159,17 @@ public class PlayerController : NetworkBehaviour {
 
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
+			if (powerUpControl != null) {
+				if (powerUpControl.getCollected()){
+					if (powerUp.CompareTag("power1")) {
+						Debug.Log("do powerup1");
+						// do amazing powerup stuff here //
+					}
+					powerUpPresent = false;
+					powerUpControl.DestoryPowerUp();
+				}
+			}
+
 			if (activeBlockControl != null) {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 
