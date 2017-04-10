@@ -128,26 +128,6 @@ public class PlayerController : NetworkBehaviour {
 		NetworkServer.Spawn (this.localWinBar);
 	}
 
-	//Check if the left arrow key can exceed the bounderies of the game
-	public bool checkValidBoundsLeft(Transform transform) {
-		foreach (Transform child in transform) {
-			if (child.position.x < bounds[0]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	//Check if the right arrow key can exceed the boundaries of the game
-	public bool checkValidBoundsRight(Transform transform) {
-		foreach (Transform child in transform) {
-			if (child.position.x >= bounds [1]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	//When a message is received
 	public void OnReceiveMessage(NetworkMessage networkMessage) {
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
@@ -173,13 +153,13 @@ public class PlayerController : NetworkBehaviour {
 			if (activeBlockControl != null) {
 				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
 
-				if (this.checkValidBoundsLeft(activeBlock.transform)) {
+				if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
 					if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
 					}	
 				}
 
-				if (this.checkValidBoundsRight(activeBlock.transform)) {
+				if (BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
 					if (Input.GetKeyDown(KeyCode.RightArrow)) {
 						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
 					}
@@ -187,7 +167,7 @@ public class PlayerController : NetworkBehaviour {
 
 				if (Input.GetKeyDown(KeyCode.UpArrow)) {
 					activeBlock.transform.Rotate(0,0,-90);
-					if (!(this.checkValidBoundsLeft(activeBlock.transform) && this.checkValidBoundsRight(activeBlock.transform))){
+					if (!(BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1]))){
 						activeBlock.transform.Rotate(0,0,90);
 					}
 				}
@@ -210,7 +190,7 @@ public class PlayerController : NetworkBehaviour {
 						if (t.phase == TouchPhase.Began) {
 							initialTouch = t;
 
-							if (this.checkValidBoundsLeft (activeBlock.transform) && this.checkValidBoundsRight (activeBlock.transform)) {
+							if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
 								activeBlock.transform.Rotate (0, 0, -90);
 							}
 
@@ -218,13 +198,13 @@ public class PlayerController : NetworkBehaviour {
 						} else if (t.phase == TouchPhase.Moved) {
 							// user swiped left
 							if (t.position.x - initialTouch.position.x < 0) {
-								if (this.checkValidBoundsLeft (activeBlock.transform)) {
+								if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
 									activeBlock.transform.position += new Vector3 ((float)-0.5, 0, 0);
 								}
 
 							// user swiped right
 							} else if (t.position.x - initialTouch.position.x > 0) {
-								if (this.checkValidBoundsRight (activeBlock.transform)) {
+								if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
 									activeBlock.transform.position += new Vector3 ((float)0.5, 0, 0);
 								}
 
