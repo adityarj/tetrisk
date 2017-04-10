@@ -15,8 +15,7 @@ public class MeteorPowerUp : PowerUpController {
 	}
 
 	public bool checkBounds(Transform playerTransform, Vector3 other) {
-		//Debug.Log (playerTransform.position.x + " x " + other.x);
-		//Debug.Log (playerTransform.position.y + " y " + other.y);
+		
 		return playerTransform.position.x + 3 > other.x && playerTransform.position.x - 3 < other.x;
 	}
 
@@ -28,10 +27,9 @@ public class MeteorPowerUp : PowerUpController {
 
 		foreach (Transform playerPosition in playerPositions) {
 			if (checkBounds (playerPosition, new Vector3(x,y,0))) {
-				Debug.Log ("It spawns");
-				Meteor.transform.position = new Vector3 (x - 8, y + 6, 0);
+				Meteor.transform.position = new Vector3 (x - 10, y + 8, 0);
 				rb = Meteor.GetComponent<Rigidbody2D> ();
-				rb.velocity = new Vector3 ( (float)3.5, -4, 0);
+				rb.velocity = new Vector3 ( (float)4, -4, 0);
 				NetworkServer.Spawn (Meteor);
 			}
 		}

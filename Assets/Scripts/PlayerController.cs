@@ -142,7 +142,6 @@ public class PlayerController : NetworkBehaviour {
 			if (powerUpControl != null) {
 				if (powerUpControl.getCollected()){
 					if (powerUp.CompareTag("power1")) {
-						Debug.Log("do powerup1");
 						// do amazing powerup stuff here //
 					}
 					powerUpPresent = false;
