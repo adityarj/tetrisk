@@ -13,12 +13,12 @@ public class PlayerController : NetworkBehaviour {
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
 	private int activePowerUpCount = 0;
-	Camera playerCam;
+//	Camera playerCam;
 
-	void Awake() {
-		playerCam = GetComponentInChildren<Camera> ();
-		playerCam.gameObject.SetActive (false);
-	}
+//	void Awake() {
+//		playerCam = GetComponentInChildren<Camera> ();
+//		playerCam.gameObject.SetActive (false);
+//	}
 	//Related to Winning Bar
 	[SerializeField]
 	private GameObject winBar;
@@ -85,10 +85,10 @@ public class PlayerController : NetworkBehaviour {
 		}
 	}
 
-	public override void OnStartLocalPlayer ()
-	{
-		playerCam.gameObject.SetActive (true);
-	}
+//	public override void OnStartLocalPlayer ()
+//	{
+//		playerCam.gameObject.SetActive (true);
+//	}
 	public override void OnStartClient ()
 	{
 		base.OnStartClient ();
