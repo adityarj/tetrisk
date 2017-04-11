@@ -7,7 +7,7 @@ public class BlockController : MonoBehaviour {
 	private Rigidbody2D rb;
 	private bool spawnSame = false;
 	private bool spawnNext = false;
-
+	private bool hasRun = false;
 	[SerializeField] private GameObject winBar;
 	[SerializeField] private GameObject shadow;
 
@@ -20,15 +20,25 @@ public class BlockController : MonoBehaviour {
 
 	void Update() {
 		if (!gameObject.CompareTag ("Untagged")) {
-			shadow.transform.position = gameObject.transform.position + new Vector3(0,0,-1);
-			Debug.Log (gameObject.GetComponent<Renderer> ().bounds.size);
+			shadow.transform.position = gameObject.transform.position;
 		} else {
 			Destroy (shadow);
 		}
 	}
 
+	private void setScaling() {
+		foreach (Transform childTransform in gameObject.transform) {
+			if (childTransform.position.x - 0.5 < shadow.transform.position.x - 0.5) {
+				shadow.transform.localScale += new Vector3 (0.5f, 0, 0);
+				shadow.transform.position += new Vector3 (-0.5f, 0, 0);
+			} 
 
-
+			if (childTransform.position.x + 0.5 > shadow.transform.position.x + 0.5) {
+				shadow.transform.localScale += new Vector3 (0.5f, 0, 0);
+			}
+		}
+	}
+		
 	public void SetSpawnNext(bool boolean) {
 		this.spawnNext = boolean;
 	}
