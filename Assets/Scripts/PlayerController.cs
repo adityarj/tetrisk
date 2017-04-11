@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour {
 	private BlockSpawner blockSpawner;
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
+	private int activePowerUpCount = 0;
 	Camera playerCam;
 
 	void Awake() {
@@ -139,10 +140,22 @@ public class PlayerController : NetworkBehaviour {
 
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
+
+			//The following is related to the base elevate, let's see if this can be further optimised powerup
+			if (activePowerUpCount > 0 && activePowerUpCount < 30) {
+				activePowerUpCount += 1;
+				gameObject.transform.Find ("base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
+				gameObject.transform.Find ("Base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
+			} else {
+				activePowerUpCount = 0;
+			}
+
 			if (powerUpControl != null) {
 				if (powerUpControl.getCollected()){
-					if (powerUp.CompareTag("power1")) {
+					if (powerUp.CompareTag ("power1")) {
 						// do amazing powerup stuff here //
+						activePowerUpCount += 1;
+						
 					}
 					powerUpPresent = false;
 					powerUpControl.DestoryPowerUp();
