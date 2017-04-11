@@ -11,18 +11,28 @@ public class BlockController : MonoBehaviour {
 	[SerializeField] private GameObject winBar;
 	[SerializeField] private GameObject shadow;
 
+	private GameObject[] shadows = new GameObject[4];
+
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
 		gameObject.tag = "falling";
-		shadow = Instantiate (shadow);
-		shadow.transform.position = gameObject.transform.position;
+		int i = 0;
+		foreach (Transform childTransform in gameObject.transform) {
+			shadows[i] = Instantiate(shadow);
+			shadows[i].transform.position = childTransform.position;
+			i++;
+		}
 	}
 
 	void Update() {
-		if (!gameObject.CompareTag ("Untagged")) {
-			shadow.transform.position = gameObject.transform.position;
-		} else {
-			Destroy (shadow);
+		int i = 0;
+		foreach (Transform childTransform in gameObject.transform) {
+			if (!gameObject.CompareTag ("Untagged")) {
+				shadows[i].transform.position = childTransform.position;
+			} else {
+				Destroy (shadows[i]);
+			}
+			i++;
 		}
 	}
 

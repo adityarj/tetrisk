@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 69bdb4a51c27c2a478b7af4d3acdce79
-timeCreated: 1490028402
+timeCreated: 1491925283
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - winBar: {instanceID: 0}
+  - shadow: {fileID: 1632307942146498, guid: 86af66dad0ba89a43bfd0ab3d9997c4f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
