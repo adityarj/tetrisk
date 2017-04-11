@@ -143,6 +143,7 @@ public class PlayerController : NetworkBehaviour {
 
 			//The following is related to the base elevate, let's see if this can be further optimised powerup
 			if (activePowerUpCount > 0 && activePowerUpCount < 30) {
+				
 				activePowerUpCount += 1;
 				gameObject.transform.Find ("base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
 				gameObject.transform.Find ("Base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);

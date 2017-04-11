@@ -8,16 +8,26 @@ public class BlockController : MonoBehaviour {
 	private bool spawnSame = false;
 	private bool spawnNext = false;
 
-	[SerializeField]
-	private GameObject winBar;
+	[SerializeField] private GameObject winBar;
+	[SerializeField] private GameObject shadow;
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
 		gameObject.tag = "falling";
-
-		//We initially ignore the collision between the winBar gameObject and this collider
-		Physics2D.IgnoreCollision (gameObject.GetComponent<Collider2D>(), winBar.GetComponent<Collider2D> ());
+		shadow = Instantiate (shadow);
+		shadow.transform.position = gameObject.transform.position;
 	}
+
+	void Update() {
+		if (!gameObject.CompareTag ("Untagged")) {
+			shadow.transform.position = gameObject.transform.position + new Vector3(0,0,-1);
+			Debug.Log (gameObject.GetComponent<Renderer> ().bounds.size);
+		} else {
+			Destroy (shadow);
+		}
+	}
+
+
 
 	public void SetSpawnNext(bool boolean) {
 		this.spawnNext = boolean;
