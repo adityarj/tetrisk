@@ -13,6 +13,7 @@ public class PlayerController : NetworkBehaviour {
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
 	private int activePowerUpCount = 0;
+	private float activeVel = -1;
 //	Camera playerCam;
 
 //	void Awake() {
@@ -142,7 +143,8 @@ public class PlayerController : NetworkBehaviour {
 		SlowPowerupMessage slowMessage = networkMessage.ReadMessage <SlowPowerupMessage> ();
 		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
 			Debug.Log ("Slow powerup in effect");
-			activeBlockControl.setVelocity (new Vector3 (0, 0.5f, 0));
+			activeVel = -0.2f;
+			activeBlockControl.setVelocity (new Vector3 (0, -0.2f, 0));
 		}
 	}
 
@@ -169,16 +171,14 @@ public class PlayerController : NetworkBehaviour {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;
 						
-					} else if (powerUp.CompareTag("PowerUpSlow")) {
-						//do powerup for slow
-					}
+					} 
 					powerUpPresent = false;
 					powerUpControl.DestoryPowerUp();
 				}
 			}
 
 			if (activeBlockControl != null) {
-				activeBlockControl.setVelocity (new Vector3 (0, -1, 0));
+				activeBlockControl.setVelocity (new Vector3 (0, activeVel, 0));
 
 				if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
 					if (Input.GetKeyDown(KeyCode.LeftArrow)) {
@@ -199,13 +199,14 @@ public class PlayerController : NetworkBehaviour {
 					}
 				}
 
-				if (Input.GetKeyDown (KeyCode.DownArrow)) {
+				if (Input.GetKeyDown (KeyCode.DownArrow) && this.activeVel!= 0.2f) {
 					activeBlockControl.applyDownwardForce ();
 				}
 
 				//Spawn block if necessary based on the status player
 				if (activeBlockControl.GetSpawnNext()) {
-					activeBlockControl = null;
+					this.activeVel = -1f;
+					this.activeBlockControl = null;
 					this.SpawnBlock ();
 				}
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class PowerUpBlockSlow : PowerUpController {
 
@@ -23,6 +24,9 @@ public class PowerUpBlockSlow : PowerUpController {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
 			base.setCollected (true);
+			SlowPowerupMessage slowMessage = new SlowPowerupMessage ();
+			slowMessage.x = other.transform.position.x;
+			NetworkServer.SendToAll (7998, slowMessage);
 		}
 	}
 }
