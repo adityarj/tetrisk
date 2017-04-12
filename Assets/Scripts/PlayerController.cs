@@ -92,7 +92,8 @@ public class PlayerController : NetworkBehaviour {
 	public override void OnStartClient ()
 	{
 		base.OnStartClient ();
-		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveMessage);
+		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
+		NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
 	}
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
@@ -129,10 +130,20 @@ public class PlayerController : NetworkBehaviour {
 		NetworkServer.Spawn (this.localWinBar);
 	}
 
-	//When a message is received
-	public void OnReceiveMessage(NetworkMessage networkMessage) {
+	//When a message is received to end the game
+	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
 		Debug.Log ("Player " + endgame.player + " won");
+	}
+
+	//When a message is received to apply the slow powerup
+	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
+		Debug.Log ("Slow powerup");
+		SlowPowerupMessage slowMessage = networkMessage.ReadMessage <SlowPowerupMessage> ();
+		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
+			Debug.Log ("Slow powerup in effect");
+			activeBlockControl.setVelocity (new Vector3 (0, 0.5f, 0));
+		}
 	}
 
 	// Update is called once per frame
@@ -147,6 +158,7 @@ public class PlayerController : NetworkBehaviour {
 				activePowerUpCount += 1;
 				gameObject.transform.Find ("base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
 				gameObject.transform.Find ("Base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
+
 			} else {
 				activePowerUpCount = 0;
 			}
@@ -157,6 +169,8 @@ public class PlayerController : NetworkBehaviour {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;
 						
+					} else if (powerUp.CompareTag("PowerUpSlow")) {
+						//do powerup for slow
 					}
 					powerUpPresent = false;
 					powerUpControl.DestoryPowerUp();

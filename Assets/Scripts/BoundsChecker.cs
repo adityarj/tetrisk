@@ -21,4 +21,8 @@ public static class BoundsChecker {
 		}
 		return true;
 	}
+		
+	public static bool checkValidBoundsTotal(double x, double[] bounds) {
+		return (x <= bounds[1] && x>= bounds[0]);
+	}
 }
