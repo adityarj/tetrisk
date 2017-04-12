@@ -7,18 +7,48 @@ public class BlockController : MonoBehaviour {
 	private Rigidbody2D rb;
 	private bool spawnSame = false;
 	private bool spawnNext = false;
+	private bool hasRun = false;
+	[SerializeField] private GameObject winBar;
+	[SerializeField] private GameObject shadow;
 
-	[SerializeField]
-	private GameObject winBar;
+	private GameObject[] shadows = new GameObject[4];
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
 		gameObject.tag = "falling";
-
-		//We initially ignore the collision between the winBar gameObject and this collider
-		Physics2D.IgnoreCollision (gameObject.GetComponent<Collider2D>(), winBar.GetComponent<Collider2D> ());
+		int i = 0;
+		foreach (Transform childTransform in gameObject.transform) {
+			shadows[i] = Instantiate(shadow);
+			shadows[i].transform.position = childTransform.position;
+			i++;
+		}
 	}
 
+	void Update() {
+		int i = 0;
+		foreach (Transform childTransform in gameObject.transform) {
+			if (!gameObject.CompareTag ("Untagged")) {
+				shadows[i].transform.position = childTransform.position;
+			} else {
+				Destroy (shadows[i]);
+			}
+			i++;
+		}
+	}
+
+	private void setScaling() {
+		foreach (Transform childTransform in gameObject.transform) {
+			if (childTransform.position.x - 0.5 < shadow.transform.position.x - 0.5) {
+				shadow.transform.localScale += new Vector3 (0.5f, 0, 0);
+				shadow.transform.position += new Vector3 (-0.5f, 0, 0);
+			} 
+
+			if (childTransform.position.x + 0.5 > shadow.transform.position.x + 0.5) {
+				shadow.transform.localScale += new Vector3 (0.5f, 0, 0);
+			}
+		}
+	}
+		
 	public void SetSpawnNext(bool boolean) {
 		this.spawnNext = boolean;
 	}
