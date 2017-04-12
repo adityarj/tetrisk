@@ -26,9 +26,20 @@ public class BlockController : MonoBehaviour {
 
 	void Update() {
 		int i = 0;
+		List<Transform> subList = new List<Transform> (); 
+
 		foreach (Transform childTransform in gameObject.transform) {
 			if (!gameObject.CompareTag ("Untagged")) {
-				shadows[i].transform.position = childTransform.position;
+				shadows [i].transform.position = childTransform.position;
+
+				shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
+
+				foreach (Transform sub in subList) {
+					if (shadows [i].transform.position.x == sub.transform.position.x) {
+						shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0f);
+					}
+				}
+				subList.Add (shadows [i].transform);
 			} else {
 				Destroy (shadows[i]);
 			}
