@@ -50,7 +50,7 @@ public class MeteorPowerUp : PowerUpController {
 		
 	}
 
-	void OnTriggerStay2D(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
 			base.setCollected (true);
