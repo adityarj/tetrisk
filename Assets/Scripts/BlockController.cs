@@ -19,7 +19,7 @@ public class BlockController : MonoBehaviour {
 		int i = 0;
 		foreach (Transform childTransform in gameObject.transform) {
 			shadows[i] = Instantiate(shadow);
-			shadows[i].transform.position = childTransform.position;
+			shadows[i].transform.position = childTransform.position - new Vector3(0,12,0);
 			i++;
 		}
 	}
@@ -30,7 +30,7 @@ public class BlockController : MonoBehaviour {
 
 		foreach (Transform childTransform in gameObject.transform) {
 			if (!gameObject.CompareTag ("Untagged")) {
-				shadows [i].transform.position = childTransform.position;
+				shadows [i].transform.position = childTransform.position - new Vector3(0,12,0);
 
 				shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
 
@@ -44,6 +44,12 @@ public class BlockController : MonoBehaviour {
 				Destroy (shadows[i]);
 			}
 			i++;
+		}
+	}
+
+	void OnDisable() {
+		for (int i=0; i < shadows.Length; i++) {
+			Destroy(shadows[i]);
 		}
 	}
 
