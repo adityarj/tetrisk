@@ -26,10 +26,10 @@ public class MeteorPowerUp : PowerUpController {
 		List<Transform> playerPositions = networkManager.startPositions;
 
 		foreach (Transform playerPosition in playerPositions) {
-			if (!checkBounds (playerPosition, new Vector3(x,y,0))) {
-				Meteor.transform.position = new Vector3 (playerPosition.transform.position.x - 10, playerPosition.transform.position.y + 8, 0);
+			if (!this.checkBounds (playerPosition, new Vector3(x,y,0))) {
+				Meteor.transform.position = new Vector3 (playerPosition.transform.position.x - 6, playerPosition.transform.position.y + 16, 0);
 				rb = Meteor.GetComponent<Rigidbody2D> ();
-				rb.velocity = new Vector3 ( (float)4, -4, 0);
+				rb.velocity = new Vector3 ( (float)6, -4, 0);
 				NetworkServer.Spawn (Meteor);
 			}
 		}
