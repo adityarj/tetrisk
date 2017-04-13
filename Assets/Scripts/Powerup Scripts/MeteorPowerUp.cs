@@ -50,12 +50,11 @@ public class MeteorPowerUp : PowerUpController {
 		
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerStay2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
 			base.setCollected (true);
 			this.CmdSpawnMeteor (other.transform.position.x,other.transform.position.y);
-			Destroy (gameObject);
 		}
 	}
 }

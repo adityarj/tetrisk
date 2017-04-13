@@ -45,27 +45,23 @@ public class PlayerController : NetworkBehaviour {
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
 			SpawnBlock ();
-			SpawnPowerUp();
+			InvokeRepeating("SpawnPowerUp", 5f, 5f);
 		}
 
 	}
 
 	private void SpawnPowerUp() {
-		StartCoroutine(WaitAndSpawnPowerUp(5f));
-	}
-
-	IEnumerator WaitAndSpawnPowerUp(float time) {
-		yield return new WaitForSeconds(time);
+		Debug.Log("present: " + powerUpPresent);
 		if (!powerUpPresent){
 			powerUpPresent = true;
 			CmdSpawnPowerUp();
 		}
-		SpawnPowerUp();
 	}
 
 	//Command to the server to spawn a power-up over the network
 	[Command]
 	public void CmdSpawnPowerUp() {
+		Debug.Log("Spawn powerup");
 		powerUp = Instantiate(powerUpSpawner.getPowerUp());
 		// TODO make position random
 		powerUp.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (2, 6, 0);
@@ -186,12 +182,14 @@ public class PlayerController : NetworkBehaviour {
 			}
 
 			if (powerUpControl != null) {
+				Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
 					if (powerUp.CompareTag ("power1")) {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;
 						
 					} 
+					Debug.Log("hi");
 					powerUpPresent = false;
 					powerUpControl.DestoryPowerUp();
 				}
