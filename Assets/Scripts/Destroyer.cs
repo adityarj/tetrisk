@@ -16,8 +16,11 @@ public class Destroyer : MonoBehaviour {
 		// collider is square, so we need to check the tag of the parent object
 		if (other.transform.parent.gameObject.tag == "falling") {
 			other.GetComponentInParent<BlockController>().SetSpawnNext(true);
+			StartCoroutine(WaitAndDestroy(0.2f));
+		} else {
+			Destroy(this.parentBlock);
 		}
-		StartCoroutine(WaitAndDestroy(0.2f));
+
 	}
 
 	// Destroy parent block after given number of seconds
