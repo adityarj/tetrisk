@@ -91,9 +91,6 @@ public class BlockController : MonoBehaviour {
 			return;
 		}
 		if (gameObject.CompareTag("falling")) {
-
-			//Once the object has been relegated to a plain block, we make it collidable again.
-			Physics2D.IgnoreCollision (gameObject.GetComponent<Collider2D>(), winBar.GetComponent<Collider2D> (), false);
 			gameObject.tag = "Untagged";
 			SetSpawnNext(true);
 		}
