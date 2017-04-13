@@ -98,6 +98,7 @@ public class BlockController : MonoBehaviour {
 
 	//Method called when downward arrow is pressed.
 	public void applyDownwardForce() {
-		this.rb.AddForce (new Vector3 (0, -900, 0));
+		this.rb.AddForce (new Vector3 (0, -1000, 0));
 	}
+		
 }
