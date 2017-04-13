@@ -87,6 +87,9 @@ public class BlockController : MonoBehaviour {
 		if (collision.collider.CompareTag("wall")) {
 			return;
 		}
+		if (!collision.collider.CompareTag("Untagged")) {
+			return;
+		}
 		if (gameObject.CompareTag("falling")) {
 
 			//Once the object has been relegated to a plain block, we make it collidable again.
