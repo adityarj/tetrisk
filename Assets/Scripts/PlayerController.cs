@@ -105,6 +105,8 @@ public class PlayerController : NetworkBehaviour {
 	//Function designed to 
 	IEnumerator waitForTime(int time) {
 		yield return new WaitForSecondsRealtime (time);
+		Debug.Log ("Block is spawned");
+		this.SpawnBlock ();
 	}
 
 	//Command to the server to spawn a block over the network
@@ -158,8 +160,7 @@ public class PlayerController : NetworkBehaviour {
 			Debug.Log ("Spam powerup in effect");
 
 			for (int i = 0; i < 10; i++) {
-				this.SpawnBlock ();
-				StartCoroutine(this.waitForTime (2));
+				StartCoroutine(this.waitForTime (1*(i+1)));
 			}
 		}
 	}
