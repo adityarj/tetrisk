@@ -35,7 +35,7 @@ public class PlayerController : NetworkBehaviour {
 	void Start () {
 		
 		//Start spawner
-		spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (0, 12, 0);
+		spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (0, 18, 0);
 		bounds [1] = spawnPosition.x + 3;
 		bounds [0] = spawnPosition.x - 3;
 
