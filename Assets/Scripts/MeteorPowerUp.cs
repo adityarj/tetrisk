@@ -40,7 +40,7 @@ public class MeteorPowerUp : PowerUpController {
 					rb = actualMeteor.GetComponent<Rigidbody2D> ();
 					rb.velocity = new Vector3 ((float)6, -4, 0);
 				}
-				
+
 				NetworkServer.Spawn (actualMeteor);
 			}
 		}
