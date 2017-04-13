@@ -23,7 +23,9 @@ public class BaseElevatePowerup : PowerUpController {
 	void OnTriggerStay2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
-			base.setCollected (true);
+			if (!base.getCollected()) {
+				base.setCollected (true);
+			}
 		}
 	}
 }

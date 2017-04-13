@@ -18,10 +18,12 @@ public class SpamBlockPowerup : PowerUpController {
 	void OnTriggerEnter2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
-			base.setCollected (true);
-			PowerupMessage spamMessage = new PowerupMessage ();
-			spamMessage.x = other.transform.position.x;
-			NetworkServer.SendToAll (7997, spamMessage);
+			if (!base.getCollected()) {
+				base.setCollected (true);
+				PowerupMessage spamMessage = new PowerupMessage ();
+				spamMessage.x = other.transform.position.x;
+				NetworkServer.SendToAll (7997, spamMessage);
+			}
 		}
 	}
 }

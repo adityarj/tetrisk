@@ -23,10 +23,12 @@ public class BlockSlowPowerup : PowerUpController {
 	void OnTriggerStay2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
-			base.setCollected (true);
-			PowerupMessage slowMessage = new PowerupMessage ();
-			slowMessage.x = other.transform.position.x;
-			NetworkServer.SendToAll (7998, slowMessage);
+			if (!base.getCollected()) {
+				base.setCollected (true);
+				PowerupMessage slowMessage = new PowerupMessage ();
+				slowMessage.x = other.transform.position.x;
+				NetworkServer.SendToAll (7998, slowMessage);
+			}
 		}
 	}
 }
