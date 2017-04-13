@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PowerUpBlockSlow : PowerUpController {
+public class BlockSlowPowerup : PowerUpController {
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +24,7 @@ public class PowerUpBlockSlow : PowerUpController {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
 			base.setCollected (true);
-			SlowPowerupMessage slowMessage = new SlowPowerupMessage ();
+			PowerupMessage slowMessage = new PowerupMessage ();
 			slowMessage.x = other.transform.position.x;
 			NetworkServer.SendToAll (7998, slowMessage);
 		}

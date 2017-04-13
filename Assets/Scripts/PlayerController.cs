@@ -95,14 +95,20 @@ public class PlayerController : NetworkBehaviour {
 		base.OnStartClient ();
 		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
 		NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
+		NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
 	}
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
-		CmdSpawnBlock ();
+		this.CmdSpawnBlock ();
 	}
 
 	public void SpawnSameBlock() {
-		CmdSpawnBlock();
+		this.CmdSpawnBlock();
+	}
+
+	//Function designed to 
+	IEnumerator waitForTime(int time) {
+		yield return new WaitForSecondsRealtime (time);
 	}
 
 	//Command to the server to spawn a block over the network
@@ -140,11 +146,25 @@ public class PlayerController : NetworkBehaviour {
 	//When a message is received to apply the slow powerup
 	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
 		Debug.Log ("Slow powerup");
-		SlowPowerupMessage slowMessage = networkMessage.ReadMessage <SlowPowerupMessage> ();
+		PowerupMessage slowMessage = networkMessage.ReadMessage <PowerupMessage> ();
 		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
 			Debug.Log ("Slow powerup in effect");
 			activeVel = -0.2f;
 			activeBlockControl.setVelocity (new Vector3 (0, -0.2f, 0));
+		}
+	}
+
+	//When a message is received to apply the spam blocks powerup
+	public void OnReceiveSpamMessage(NetworkMessage networkMessage) {
+		Debug.Log ("Spam blocks message");
+		PowerupMessage spamMessage = networkMessage.ReadMessage<PowerupMessage> ();
+		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
+			Debug.Log ("Spam powerup in effect");
+
+			for (int i = 0; i < 10; i++) {
+				this.SpawnBlock ();
+				StartCoroutine(this.waitForTime (2));
+			}
 		}
 	}
 

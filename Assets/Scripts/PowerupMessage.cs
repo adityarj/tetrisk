@@ -3,6 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class SlowPowerupMessage : MessageBase {
+public class PowerupMessage : MessageBase {
 	public double x;
 }
