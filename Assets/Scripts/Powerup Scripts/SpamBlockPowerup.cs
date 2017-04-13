@@ -16,6 +16,7 @@ public class SpamBlockPowerup : PowerUpController {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
+		Debug.Log ("Spam block powerup method");
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("Untagged")) {
 			if (!base.getCollected()) {

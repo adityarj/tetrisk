@@ -14,6 +14,7 @@ public class PlayerController : NetworkBehaviour {
 	private Touch initialTouch;
 	private int activePowerUpCount = 0;
 	private float activeVel = -1;
+	private bool spawnIsDisabled = false;
 //	Camera playerCam;
 
 //	void Awake() {
@@ -104,8 +105,10 @@ public class PlayerController : NetworkBehaviour {
 
 	//Function designed to 
 	IEnumerator waitForTime(int time) {
+		Debug.Log (time);
 		yield return new WaitForSecondsRealtime (time);
 		Debug.Log ("Block is spawned");
+		this.activeBlockControl = null;
 		this.SpawnBlock ();
 	}
 
@@ -159,9 +162,11 @@ public class PlayerController : NetworkBehaviour {
 		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
 			Debug.Log ("Spam powerup in effect");
 
+			this.spawnIsDisabled = true;
 			for (int i = 0; i < 10; i++) {
 				StartCoroutine(this.waitForTime (1*(i+1)));
 			}
+			this.spawnIsDisabled = false;
 		}
 	}
 
@@ -183,7 +188,7 @@ public class PlayerController : NetworkBehaviour {
 			}
 
 			if (powerUpControl != null) {
-				Debug.Log("collected: " + powerUpControl.getCollected());
+				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
 					if (powerUp.CompareTag ("power1")) {
 						// do amazing powerup stuff here //
@@ -223,7 +228,7 @@ public class PlayerController : NetworkBehaviour {
 				}
 
 				//Spawn block if necessary based on the status player
-				if (activeBlockControl.GetSpawnNext()) {
+				if (activeBlockControl.GetSpawnNext() && !this.spawnIsDisabled) {
 					this.activeVel = -1f;
 					this.activeBlockControl = null;
 					this.SpawnBlock ();
