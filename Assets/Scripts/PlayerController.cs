@@ -245,7 +245,7 @@ public class PlayerController : NetworkBehaviour {
 
 				//Debug.Log (this.spawnIsDisabled);
 				//Spawn block if necessary based on the status player
-				if (activeBlockControl.GetSpawnNext() && !this.spawnIsDisabled) {
+				if (activeBlockControl.GetSpawnNext()) {
 					this.activeVel = -1f;
 					this.activeBlockControl = null;
 					this.SpawnBlock ();

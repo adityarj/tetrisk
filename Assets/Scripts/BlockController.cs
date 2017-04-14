@@ -83,16 +83,14 @@ public class BlockController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-			
-		if (collision.collider.CompareTag("wall")) {
+		
+		if (collision.collider.CompareTag ("wall")) {
 			return;
-		}
-		if (!collision.collider.CompareTag("DeadBlock")) {
-			return;
-		}
-		if (gameObject.CompareTag("falling")) {
+		} else if (gameObject.CompareTag ("falling")) {
 			gameObject.tag = "DeadBlock";
-			SetSpawnNext(true);
+			SetSpawnNext (true);
+		} else {
+			return;
 		}
 	}
 
