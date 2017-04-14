@@ -23,6 +23,7 @@ public class PlayerController : NetworkBehaviour {
 //		playerCam.gameObject.SetActive (false);
 //	}
 	//Related to Winning Bar
+
 	[SerializeField]
 	private GameObject winBar;
 	private GameObject localWinBar;
@@ -35,6 +36,9 @@ public class PlayerController : NetworkBehaviour {
 	private PowerUpController powerUpControl;
 	private PowerUpSpawner powerUpSpawner;
 	private bool powerUpPresent;
+	[SerializeField]
+	private GameObject FortuneWheel;
+	private FortuneWheelController fortuneWheelController;
 
 	// Use this for initialization
 	void Start () {
@@ -50,6 +54,9 @@ public class PlayerController : NetworkBehaviour {
 
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
+			FortuneWheel = Instantiate (FortuneWheel);
+			FortuneWheel.transform.position = new Vector3 (spawnPosition.x + 3, spawnPosition.y - 2, 0);
+			fortuneWheelController = FortuneWheel.GetComponentInChildren<FortuneWheelController> ();
 			SpawnBlock ();
 			InvokeRepeating("SpawnPowerUp", 5f, 5f);
 		}
@@ -96,6 +103,7 @@ public class PlayerController : NetworkBehaviour {
 	{
 		base.OnStartClient ();
 		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
+
 		NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
 		NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
 	}
@@ -166,6 +174,8 @@ public class PlayerController : NetworkBehaviour {
 	//When a message is received to apply the slow powerup
 	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
 		Debug.Log ("Slow powerup");
+		fortuneWheelController.HandlePowerup (Powerup.BlockSlow);
+
 		PowerupMessage slowMessage = networkMessage.ReadMessage <PowerupMessage> ();
 		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
 			Debug.Log ("Slow powerup in effect");
