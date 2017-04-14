@@ -9,7 +9,7 @@ public class WinBarController : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		rb.velocity = new Vector3 (0, -0.5f, 0);
+		rb.velocity = new Vector3 (0, -0.05f, 0);
 	}
 	
 	// Update is called once per frame

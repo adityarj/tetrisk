@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 public class GameOverUI : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class GameOverUI : MonoBehaviour {
 
 	public void PlayAgain() {
 		Debug.Log ("Try again");
+		NetworkManager.Shutdown ();
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 	}
 }
