@@ -29,9 +29,24 @@ public class FortuneWheelController : MonoBehaviour {
 		} else if (powerup.Equals(Powerup.BaseElevate)) {
 			//Rotate to base elevate
 			gameObject.transform.Rotate(new Vector3(0,0,90));
-
 		}
 		
+	}
+		
+	public void VisitPowerup(MeteorPowerUp powerup) {
+		gameObject.transform.Rotate (new Vector3 (0, 0, 90));
+	}
+
+	public void VisitPowerup(BlockSlowPowerup powerup) {
+		gameObject.transform.Rotate (new Vector3 (0, 0, 90));
+	}
+
+	public void VisitPowerup(SpamBlockPowerup powerup) {
+		gameObject.transform.Rotate (new Vector3 (0, 0, 90));
+	}
+
+	public void VisitPowerup(BaseElevatePowerup powerup) {
+		gameObject.transform.Rotate (new Vector3 (0, 0, 90));
 	}
 
 	public void ResetFortuneWheel() {

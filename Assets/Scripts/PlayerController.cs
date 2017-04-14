@@ -174,7 +174,6 @@ public class PlayerController : NetworkBehaviour {
 	//When a message is received to apply the slow powerup
 	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
 		Debug.Log ("Slow powerup");
-		fortuneWheelController.HandlePowerup (Powerup.BlockSlow);
 
 		PowerupMessage slowMessage = networkMessage.ReadMessage <PowerupMessage> ();
 		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
@@ -216,6 +215,10 @@ public class PlayerController : NetworkBehaviour {
 			if (powerUpControl != null) {
 				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
+
+					//Rotate according to powerup needs
+					fortuneWheelController.HandlePowerup(powerUpControl.getPowerup());
+
 					if (powerUp.CompareTag ("power1")) {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;

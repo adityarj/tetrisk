@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public abstract class PowerUpController : NetworkBehaviour {
+abstract public class PowerUpController : NetworkBehaviour {
 
 	private bool collected = false;
+
+	abstract public Powerup getPowerup ();
 
 	public void setCollected(bool collected) {
 		this.collected = collected;

@@ -15,6 +15,11 @@ public class BaseElevatePowerup : PowerUpController {
 		
 	}
 
+	public override Powerup getPowerup ()
+	{
+		return Powerup.BaseElevate;
+	}
+
 	public bool checkBounds(Transform playerTransform, Vector3 other) {
 		Debug.Log (playerTransform.position.x + " x " + other.x);
 		return playerTransform.position.x + 3 > other.x && playerTransform.position.x - 3 < other.x;

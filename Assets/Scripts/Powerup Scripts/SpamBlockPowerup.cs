@@ -15,6 +15,11 @@ public class SpamBlockPowerup : PowerUpController {
 		
 	}
 
+	public override Powerup getPowerup ()
+	{
+		return Powerup.SpamBlock;
+	}
+
 	void OnTriggerEnter2D(Collider2D other) {
 		Debug.Log ("Spam block powerup method");
 		GameObject parentBlock = other.transform.parent.gameObject;

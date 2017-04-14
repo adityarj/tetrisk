@@ -20,6 +20,11 @@ public class MeteorPowerUp : PowerUpController {
 		return playerTransform.position.x + 4 > other.x && playerTransform.position.x - 4 < other.x;
 	}
 
+	public override Powerup getPowerup ()
+	{
+		return Powerup.Meteor;
+	}
+
 	[Command]
 	private void CmdSpawnMeteor(float x, float y) {
 		
