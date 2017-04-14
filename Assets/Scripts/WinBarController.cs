@@ -62,7 +62,6 @@ public class WinBarController : NetworkBehaviour {
 					endgame.player = i;
 					endgame.message = "What a baller";
 					NetworkServer.SendToAll (7999, endgame);
-					NetworkServer.Shutdown ();
 				}
 			}
 			//CmdGameOver ();

@@ -29,7 +29,7 @@ public class BlockController : MonoBehaviour {
 		List<Transform> subList = new List<Transform> (); 
 
 		foreach (Transform childTransform in gameObject.transform) {
-			if (!gameObject.CompareTag ("Untagged")) {
+			if (!gameObject.CompareTag ("DeadBlock")) {
 				shadows [i].transform.position = childTransform.position - new Vector3(0,12,0);
 
 				shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
@@ -87,7 +87,7 @@ public class BlockController : MonoBehaviour {
 		if (collision.collider.CompareTag("wall")) {
 			return;
 		}
-		if (!collision.collider.CompareTag("Untagged")) {
+		if (!collision.collider.CompareTag("DeadBlock")) {
 			return;
 		}
 		if (gameObject.CompareTag("falling")) {

@@ -28,6 +28,7 @@ public class PlayerController : NetworkBehaviour {
 	private GameObject localWinBar;
 	[SerializeField]
 	private GameObject gameOverUI;
+	private GameObject gameOverUIInstance;
 
 	//Related to PowerUps
 	private GameObject powerUp;
@@ -154,8 +155,12 @@ public class PlayerController : NetworkBehaviour {
 	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
 		Debug.Log ("Player " + endgame.player + " won");
-		Instantiate (this.gameOverUI);
-		NetworkServer.Shutdown ();
+
+		Debug.Log (this.gameOverUI);
+
+		if (this.gameOverUIInstance == null) {
+			this.gameOverUIInstance = Instantiate (this.gameOverUI);
+		}
 	}
 
 	//When a message is received to apply the slow powerup
