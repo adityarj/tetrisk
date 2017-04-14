@@ -91,7 +91,7 @@ public class BlockController : MonoBehaviour {
 			return;
 		}
 		if (gameObject.CompareTag("falling")) {
-			gameObject.tag = "Untagged";
+			gameObject.tag = "DeadBlock";
 			SetSpawnNext(true);
 		}
 	}

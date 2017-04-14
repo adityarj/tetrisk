@@ -26,6 +26,8 @@ public class PlayerController : NetworkBehaviour {
 	[SerializeField]
 	private GameObject winBar;
 	private GameObject localWinBar;
+	[SerializeField]
+	private GameObject gameOverUI;
 
 	//Related to PowerUps
 	private GameObject powerUp;
@@ -116,7 +118,7 @@ public class PlayerController : NetworkBehaviour {
 			Debug.Log ("Block is spawned");
 			this.spawnIsDisabled = true;
 			this.activeBlockControl = null;
-			this.activeBlock.tag = "Untagged";
+			this.activeBlock.tag = "DeadBlock";
 			this.CmdSpawnBlock ();
 			this.iterVar += 1;
 		}
@@ -152,6 +154,8 @@ public class PlayerController : NetworkBehaviour {
 	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
 		Debug.Log ("Player " + endgame.player + " won");
+		Instantiate (this.gameOverUI);
+		NetworkServer.Shutdown ();
 	}
 
 	//When a message is received to apply the slow powerup
@@ -171,7 +175,6 @@ public class PlayerController : NetworkBehaviour {
 		PowerupMessage spamMessage = networkMessage.ReadMessage<PowerupMessage> ();
 		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
 			Debug.Log ("Spam powerup in effect");
-
 			this.spawnIsDisabled = true;
 			InvokeRepeating ("waitForTime", 1.5f, 1.5f);
 

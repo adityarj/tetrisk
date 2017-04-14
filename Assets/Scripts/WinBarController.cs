@@ -9,7 +9,7 @@ public class WinBarController : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
-		rb.velocity = new Vector3 (0, -0.05f, 0);
+		rb.velocity = new Vector3 (0, -0.5f, 0);
 	}
 	
 	// Update is called once per frame
@@ -42,7 +42,10 @@ public class WinBarController : NetworkBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		
 		GameObject parentBlock = other.transform.parent.gameObject;
-		if (parentBlock.CompareTag("Untagged")) {
+
+		Debug.Log (parentBlock);
+
+		if (parentBlock.CompareTag("DeadBlock")) {
 			setWin(true);
 			Debug.Log("Win! Game Over");
 			NetworkManager networkManager = NetworkManager.singleton;
@@ -54,13 +57,12 @@ public class WinBarController : NetworkBehaviour {
 
 					EndMessage endMessage;
 					endMessage.finalWords = "Player " + i + " won";
-					Debug.Log(endMessage.finalWords);
 					EndGameMessage endgame = new EndGameMessage ();
 
 					endgame.player = i;
 					endgame.message = "What a baller";
-
 					NetworkServer.SendToAll (7999, endgame);
+					NetworkServer.Shutdown ();
 				}
 			}
 			//CmdGameOver ();
