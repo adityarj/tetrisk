@@ -15,6 +15,7 @@ public class PlayerController : NetworkBehaviour {
 	private int activePowerUpCount = 0;
 	private float activeVel = -1;
 	private bool spawnIsDisabled = false;
+	private int iterVar = 0;
 //	Camera playerCam;
 
 //	void Awake() {
@@ -43,6 +44,7 @@ public class PlayerController : NetworkBehaviour {
 
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
 		powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
+
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
 			SpawnBlock ();
@@ -103,13 +105,21 @@ public class PlayerController : NetworkBehaviour {
 		this.CmdSpawnBlock();
 	}
 
-	//Function designed to 
-	IEnumerator waitForTime(int time) {
-		Debug.Log (time);
-		yield return new WaitForSecondsRealtime (time);
-		Debug.Log ("Block is spawned");
-		this.activeBlockControl = null;
-		this.SpawnBlock ();
+	//Function designed to wait and spawn blocks at regular intervals
+	private void waitForTime() {
+		if (this.iterVar >= 5) {
+			this.iterVar = 0;
+			this.spawnIsDisabled = false;
+			CancelInvoke ();
+			return;
+		} else {
+			Debug.Log ("Block is spawned");
+			this.spawnIsDisabled = true;
+			this.activeBlockControl = null;
+			this.activeBlock.tag = "Untagged";
+			this.CmdSpawnBlock ();
+			this.iterVar += 1;
+		}
 	}
 
 	//Command to the server to spawn a block over the network
@@ -163,10 +173,8 @@ public class PlayerController : NetworkBehaviour {
 			Debug.Log ("Spam powerup in effect");
 
 			this.spawnIsDisabled = true;
-			for (int i = 0; i < 10; i++) {
-				StartCoroutine(this.waitForTime (1*(i+1)));
-			}
-			this.spawnIsDisabled = false;
+			InvokeRepeating ("waitForTime", 1.5f, 1.5f);
+
 		}
 	}
 
@@ -227,6 +235,7 @@ public class PlayerController : NetworkBehaviour {
 					activeBlockControl.applyDownwardForce ();
 				}
 
+				//Debug.Log (this.spawnIsDisabled);
 				//Spawn block if necessary based on the status player
 				if (activeBlockControl.GetSpawnNext() && !this.spawnIsDisabled) {
 					this.activeVel = -1f;
