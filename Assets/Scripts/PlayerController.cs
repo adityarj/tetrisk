@@ -113,17 +113,20 @@ public class PlayerController : NetworkBehaviour {
 	{
 		base.OnStartClient ();
 		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
+		NetworkServer.RegisterHandler (7999, OnReceiveSlowMessage);
 
 		NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
+		NetworkServer.RegisterHandler (7998, OnReceiveSlowMessage);
 		NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
+		NetworkServer.RegisterHandler (7997, OnReceiveSlowMessage);
 	}
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
-		this.CmdSpawnBlock ();
+		this.CmdSpawnBlock (this.spawnPosition);
 	}
 
 	public void SpawnSameBlock() {
-		this.CmdSpawnBlock();
+		this.CmdSpawnBlock(this.spawnPosition);
 	}
 
 	//Function designed to wait and spawn blocks at regular intervals
@@ -138,16 +141,16 @@ public class PlayerController : NetworkBehaviour {
 			this.spawnIsDisabled = true;
 			this.activeBlockControl = null;
 			this.activeBlock.tag = "DeadBlock";
-			this.CmdSpawnBlock ();
+			this.SpawnBlock ();
 			this.iterVar += 1;
 		}
 	}
 
 	//Command to the server to spawn a block over the network
 	[Command]
-	public void CmdSpawnBlock() {
+	public void CmdSpawnBlock(Vector3 position) {
 		activeBlock = Instantiate(blockSpawner.getBlock());
-		activeBlock.transform.position = spawnPosition;
+		activeBlock.transform.position = position;
 		NetworkServer.SpawnWithClientAuthority (activeBlock,gameObject);
 		RpcSyncSpawnedObject (activeBlock);
 		
