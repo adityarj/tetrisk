@@ -293,44 +293,6 @@ public class PlayerController : NetworkBehaviour {
 					this.activeBlockControl = null;
 					this.SpawnBlock ();
 				}
-
-				if (Input.touchCount > 0) {
-
-					foreach (Touch t in Input.touches) {
-
-						// handle rotation
-						if (t.phase == TouchPhase.Began) {
-							initialTouch = t;
-
-							if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
-								activeBlock.transform.Rotate (0, 0, -90);
-							}
-
-						// handle lateral movement
-						} else if (t.phase == TouchPhase.Moved) {
-							// user swiped left
-							if (t.position.x - initialTouch.position.x < 0) {
-								if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
-									activeBlock.transform.position += new Vector3 ((float)-0.5, 0, 0);
-								}
-
-							// user swiped right
-							} else if (t.position.x - initialTouch.position.x > 0) {
-								if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
-									activeBlock.transform.position += new Vector3 ((float)0.5, 0, 0);
-								}
-
-							// user swiped up
-							} else if (t.position.y - initialTouch.position.y > 0) {
-								// handle up?
-
-							// user swiped down
-							} else if (t.position.y - initialTouch.position.y < 0) {
-								activeBlock.transform.position += new Vector3 (0, (float)-0.5, 0);
-							}
-						}
-					}
-				}
 			}
 		}
 	}
