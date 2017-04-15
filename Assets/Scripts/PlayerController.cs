@@ -219,7 +219,7 @@ public class PlayerController : NetworkBehaviour {
 					//Rotate according to powerup needs
 					fortuneWheelController.HandlePowerup(powerUpControl);
 
-					if (powerUp.CompareTag ("power1")) {
+					if (powerUp.CompareTag ("power1") && fortuneWheelController.getState().Equals(PowerupState.Waiting)) {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;
 						

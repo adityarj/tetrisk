@@ -63,25 +63,28 @@ public class FortuneWheelController : MonoBehaviour {
 	//Do something based on each value
 	public void HandlePowerup(PowerUpController powerUpController) {
 
-		this.powerUpController = powerUpController;
+		if (this.state.Equals(PowerupState.NoPowerup)) {
+			
+			this.powerUpController = powerUpController;
 
-		Powerup powerup = powerUpController.getPowerup ();
+			Powerup powerup = powerUpController.getPowerup ();
 
-		if (powerup.Equals(Powerup.Meteor)) {
-			//Rotate to meteor
-			this.angle = 90;
-		} else if (powerup.Equals(Powerup.BlockSlow)) {
-			//Rotate to Block SLow
-			this.angle = 90;
-		} else if (powerup.Equals(Powerup.SpamBlock)) {
-			//Rotate to spam block
-			this.angle = 90;
-		} else if (powerup.Equals(Powerup.BaseElevate)) {
-			//Rotate to base elevate
-			this.angle = 90;
+			if (powerup.Equals(Powerup.Meteor)) {
+				//Rotate to meteor
+				this.angle = 90;
+			} else if (powerup.Equals(Powerup.BlockSlow)) {
+				//Rotate to Block SLow
+				this.angle = 90;
+			} else if (powerup.Equals(Powerup.SpamBlock)) {
+				//Rotate to spam block
+				this.angle = 90;
+			} else if (powerup.Equals(Powerup.BaseElevate)) {
+				//Rotate to base elevate
+				this.angle = 90;
+			}
+
+			this.state = PowerupState.ActivePowerup;
 		}
-
-		this.state = PowerupState.ActivePowerup;
 	}	
 }
 
