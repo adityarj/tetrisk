@@ -51,6 +51,7 @@ public class BlockController : MonoBehaviour {
 			i++;
 		}
 		if (gameObject.CompareTag("DeadBlock")) {
+			if (rb.velocity.y > -1f) { 
 			foreach (Transform childTransform in gameObject.transform) {
 				if (childTransform.position.y > maxy) {
 					maxy = childTransform.position.y;
@@ -59,6 +60,9 @@ public class BlockController : MonoBehaviour {
 			// make maxy postive
 			float maxynormal = maxy + 6f;
 			rb.gravityScale = gravityBias + maxynormal*gravityCoeffcient;
+			} else {
+				rb.gravityScale = gravityBias;
+			}
 		}
 	}
 
