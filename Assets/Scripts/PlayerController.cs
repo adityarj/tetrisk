@@ -40,6 +40,11 @@ public class PlayerController : NetworkBehaviour {
 	private GameObject FortuneWheel;
 	private FortuneWheelController fortuneWheelController;
 
+	//Related to UI Buttons
+	public static bool moveLeft;
+	public static bool moveRight;
+	public static bool rotate;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -51,6 +56,11 @@ public class PlayerController : NetworkBehaviour {
 
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
 		powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
+
+		//Instantiate all variables to false.
+		moveLeft = false;
+		moveRight = false;
+		rotate = false;
 
 		//If the script runs on a client, spawn for that client
 		if (isLocalPlayer) {
@@ -233,27 +243,48 @@ public class PlayerController : NetworkBehaviour {
 				activeBlockControl.setVelocity (new Vector3 (0, activeVel, 0));
 
 				if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
-					if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+					if (moveLeft && !moveRight) {
 						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
-					}	
+						moveLeft = false;
+					}
 				}
 
 				if (BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
-					if (Input.GetKeyDown(KeyCode.RightArrow)) {
+					if (moveRight && !moveLeft) {
 						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
+						moveRight = false;
 					}
 				}
 
-				if (Input.GetKeyDown(KeyCode.UpArrow)) {
-					activeBlock.transform.Rotate(0,0,-90);
-					if (!(BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1]))){
-						activeBlock.transform.Rotate(0,0,90);
+				if (rotate) {
+					if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
+						activeBlock.transform.Rotate (0, 0, -90);
 					}
+					rotate = false;
 				}
 
-				if (Input.GetKeyDown (KeyCode.DownArrow) && this.activeVel!= 0.2f) {
-					activeBlockControl.applyDownwardForce ();
-				}
+//				if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
+//					if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+//						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
+//					}	
+//				}
+//
+//				if (BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
+//					if (Input.GetKeyDown(KeyCode.RightArrow)) {
+//						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
+//					}
+//				}
+//
+//				if (Input.GetKeyDown(KeyCode.UpArrow)) {
+//					activeBlock.transform.Rotate(0,0,-90);
+//					if (!(BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0]) && BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1]))){
+//						activeBlock.transform.Rotate(0,0,90);
+//					}
+//				}
+//
+//				if (Input.GetKeyDown (KeyCode.DownArrow) && this.activeVel!= 0.2f) {
+//					activeBlockControl.applyDownwardForce ();
+//				}
 
 				//Debug.Log (this.spawnIsDisabled);
 				//Spawn block if necessary based on the status player
