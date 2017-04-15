@@ -20,7 +20,7 @@ public class SpamBlockPowerup : PowerUpController {
 		return Powerup.SpamBlock;
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerStay2D(Collider2D other) {
 		Debug.Log ("Spam block powerup method");
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("DeadBlock")) {
