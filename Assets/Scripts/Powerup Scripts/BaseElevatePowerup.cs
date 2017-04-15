@@ -25,6 +25,7 @@ public class BaseElevatePowerup : PowerUpController {
 		return playerTransform.position.x + 3 > other.x && playerTransform.position.x - 3 < other.x;
 	}
 
+	//Detect powerup
 	void OnTriggerStay2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("DeadBlock")) {
@@ -32,5 +33,11 @@ public class BaseElevatePowerup : PowerUpController {
 				base.setCollected (true);
 			}
 		}
+	}
+
+	//Execute the powerup once the fortune wheel has finished spinning
+	public override void executePowerup ()
+	{
+		Debug.Log ("WHY MAI LIFE LIKE DIS");
 	}
 }

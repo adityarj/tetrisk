@@ -10,6 +10,7 @@ public class MeteorPowerUp : PowerUpController {
 	private Rigidbody2D rb;
 	private GameObject actualMeteor;
 
+	private float[] coord;
 	// Use this for initialization
 	void Start () {
 		
@@ -55,13 +56,21 @@ public class MeteorPowerUp : PowerUpController {
 		
 	}
 
+	//Detect powerup
 	void OnTriggerStay2D(Collider2D other) {
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("DeadBlock")) {
 			if (!base.getCollected()) {
 				base.setCollected (true);
-				this.CmdSpawnMeteor (other.transform.position.x,other.transform.position.y);
+				coord = new float[] { other.transform.position.x, other.transform.position.y };
+				//this.CmdSpawnMeteor (other.transform.position.x,other.transform.position.y);
 			}
 		}
 	}
+
+	//Execute the powerup once the fortune wheel has finished spinning
+	public override void executePowerup() {
+		this.CmdSpawnMeteor (this.coord[0],this.coord[1]);
+	}
+		
 }

@@ -9,6 +9,8 @@ abstract public class PowerUpController : NetworkBehaviour {
 
 	abstract public Powerup getPowerup ();
 
+	abstract public void executePowerup ();
+
 	public void setCollected(bool collected) {
 		this.collected = collected;
 	}

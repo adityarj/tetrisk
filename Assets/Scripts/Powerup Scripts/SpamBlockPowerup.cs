@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class SpamBlockPowerup : PowerUpController {
+	
+	private PowerupMessage spamMessage;
 
 	// Use this for initialization
 	void Start () {
@@ -20,16 +22,25 @@ public class SpamBlockPowerup : PowerUpController {
 		return Powerup.SpamBlock;
 	}
 
+	//Detect powerup
 	void OnTriggerStay2D(Collider2D other) {
+
 		Debug.Log ("Spam block powerup method");
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("DeadBlock")) {
 			if (!base.getCollected()) {
 				base.setCollected (true);
-				PowerupMessage spamMessage = new PowerupMessage ();
+				spamMessage = new PowerupMessage ();
 				spamMessage.x = other.transform.position.x;
-				NetworkServer.SendToAll (7997, spamMessage);
+				//NetworkServer.SendToAll (7997, spamMessage);
 			}
 		}
 	}
+
+	//Execute the powerup once the fortune wheel has finished spinning
+	public override void executePowerup ()
+	{
+		NetworkServer.SendToAll (7997, spamMessage);
+	}
+		
 }

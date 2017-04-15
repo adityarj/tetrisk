@@ -217,7 +217,7 @@ public class PlayerController : NetworkBehaviour {
 				if (powerUpControl.getCollected()){
 
 					//Rotate according to powerup needs
-					fortuneWheelController.HandlePowerup(powerUpControl.getPowerup());
+					fortuneWheelController.HandlePowerup(powerUpControl);
 
 					if (powerUp.CompareTag ("power1")) {
 						// do amazing powerup stuff here //
@@ -226,7 +226,6 @@ public class PlayerController : NetworkBehaviour {
 					} 
 					Debug.Log("hi");
 					powerUpPresent = false;
-					powerUpControl.DestoryPowerUp();
 				}
 			}
 
