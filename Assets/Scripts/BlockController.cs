@@ -11,6 +11,10 @@ public class BlockController : MonoBehaviour {
 	[SerializeField] private GameObject winBar;
 	[SerializeField] private GameObject shadow;
 
+	private float maxy = -6f; // highest point of block (range is b/w -6 to 10)
+	public float gravityBias = 1f;
+	public float gravityCoeffcient = 2f;
+
 	private GameObject[] shadows = new GameObject[4];
 
 	void Start () {
@@ -26,9 +30,9 @@ public class BlockController : MonoBehaviour {
 
 	void Update() {
 		int i = 0;
-		List<Transform> subList = new List<Transform> (); 
-
+		List<Transform> subList = new List<Transform> ();
 		foreach (Transform childTransform in gameObject.transform) {
+			
 			if (!gameObject.CompareTag ("DeadBlock")) {
 				shadows [i].transform.position = childTransform.position - new Vector3(0,12,0);
 
@@ -42,8 +46,19 @@ public class BlockController : MonoBehaviour {
 				subList.Add (shadows [i].transform);
 			} else {
 				Destroy (shadows[i]);
+
 			}
 			i++;
+		}
+		if (gameObject.CompareTag("DeadBlock")) {
+			foreach (Transform childTransform in gameObject.transform) {
+				if (childTransform.position.y > maxy) {
+					maxy = childTransform.position.y;
+				}
+			}
+			// make maxy postive
+			float maxynormal = maxy + 6f;
+			rb.gravityScale = gravityBias + maxynormal*gravityCoeffcient;
 		}
 	}
 
