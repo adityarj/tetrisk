@@ -58,7 +58,7 @@ public class PlayerController : NetworkBehaviour {
 			FortuneWheel.transform.position = new Vector3 (spawnPosition.x + 3, spawnPosition.y - 2, 0);
 			fortuneWheelController = FortuneWheel.GetComponentInChildren<FortuneWheelController> ();
 			SpawnBlock ();
-			InvokeRepeating("SpawnPowerUp", 5f, 5f);
+			InvokeRepeating("SpawnPowerUp", 5f, 10f);
 		}
 
 	}
@@ -215,11 +215,11 @@ public class PlayerController : NetworkBehaviour {
 			if (powerUpControl != null) {
 				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
-
+					Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
 					//Rotate according to powerup needs
 					fortuneWheelController.HandlePowerup(powerUpControl);
 
-					if (powerUp.CompareTag ("power1") && fortuneWheelController.getState().Equals(PowerupState.Waiting)) {
+					if (powerUp.CompareTag ("power1") && (fortuneWheelController.getState().Equals(PowerupState.Waiting))) {
 						// do amazing powerup stuff here //
 						activePowerUpCount += 1;
 						
