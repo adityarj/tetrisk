@@ -9,6 +9,8 @@ public class FortuneWheelController : MonoBehaviour {
 	private int iterAngle = 0;
 	private int iterWait = 0;
 	private PowerUpController powerUpController;
+	private const float rotationSpeed = 358.2f;
+	private const int fullRotation = 100;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +23,7 @@ public class FortuneWheelController : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		
 		if (this.state.Equals(PowerupState.NoPowerup)) {
 			
@@ -33,7 +35,7 @@ public class FortuneWheelController : MonoBehaviour {
 				this.state = PowerupState.Waiting;
 				this.iterAngle = 0;
 			} else {
-				gameObject.transform.Rotate (new Vector3 (0, 0, 200 * Time.deltaTime));
+				gameObject.transform.Rotate (new Vector3 (0, 0, rotationSpeed * Time.deltaTime));
 				this.iterAngle += 1;
 			}
 		} else if (this.state.Equals(PowerupState.Waiting)) {
@@ -54,7 +56,7 @@ public class FortuneWheelController : MonoBehaviour {
 				this.angle = 0;
 				this.iterAngle = 0;
 			} else {
-				gameObject.transform.Rotate (new Vector3 (0, 0, -200 * Time.deltaTime));
+				gameObject.transform.Rotate (new Vector3 (0, 0, -rotationSpeed * Time.deltaTime));
 				this.iterAngle += 1;
 			}
 		}
@@ -71,16 +73,16 @@ public class FortuneWheelController : MonoBehaviour {
 
 			if (powerup.Equals(Powerup.Meteor)) {
 				//Rotate to meteor
-				this.angle = 90;
+				this.angle = fullRotation * 2 + 7;
 			} else if (powerup.Equals(Powerup.BlockSlow)) {
 				//Rotate to Block SLow
-				this.angle = 90;
+				this.angle = fullRotation * 2 + (fullRotation/8)*3 + 7;
 			} else if (powerup.Equals(Powerup.SpamBlock)) {
 				//Rotate to spam block
-				this.angle = 90;
+				this.angle = fullRotation * 2 + (fullRotation/16)*3;
 			} else if (powerup.Equals(Powerup.BaseElevate)) {
 				//Rotate to base elevate
-				this.angle = 90;
+				this.angle = fullRotation * 2 + (fullRotation/4) + 7;
 			}
 
 			this.state = PowerupState.ActivePowerup;
