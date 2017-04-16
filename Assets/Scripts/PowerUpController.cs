@@ -7,6 +7,8 @@ abstract public class PowerUpController : NetworkBehaviour {
 
 	private bool collected = false;
 
+	abstract public void setClient (NetworkClient client);
+
 	abstract public Powerup getPowerup ();
 
 	abstract public void executePowerup ();

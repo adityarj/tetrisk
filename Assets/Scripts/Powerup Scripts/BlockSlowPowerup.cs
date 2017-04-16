@@ -6,20 +6,16 @@ using UnityEngine.Networking;
 public class BlockSlowPowerup : PowerUpController {
 
 	private PowerupMessage slowMessage;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	private NetworkClient client;
 
 	public override Powerup getPowerup ()
 	{
 		return Powerup.BlockSlow;
+	}
+
+	public override void setClient (NetworkClient client)
+	{
+		this.client = client;
 	}
 
 	private bool checkBounds(Transform playerTransform, Vector3 other) {
@@ -43,6 +39,6 @@ public class BlockSlowPowerup : PowerUpController {
 	//Execute the powerup once the fortune wheel has finished spinning
 	public override void executePowerup() {
 		NetworkServer.SendToAll (7998, slowMessage);
-	
+		client.Send (7998, slowMessage);
 	}
 }

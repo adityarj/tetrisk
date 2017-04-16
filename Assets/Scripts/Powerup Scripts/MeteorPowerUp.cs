@@ -9,13 +9,13 @@ public class MeteorPowerUp : PowerUpController {
 	private GameObject Meteor;
 	private Rigidbody2D rb;
 	private GameObject actualMeteor;
-
+	private NetworkClient client;
 	private float[] coord;
-	// Use this for initialization
-	void Start () {
-		
-	}
 
+	public override void setClient (NetworkClient client) {
+		this.client = client;
+	}
+		
 	public bool checkBounds(Transform playerTransform, Vector3 other) {
 		
 		return playerTransform.position.x + 4 > other.x && playerTransform.position.x - 4 < other.x;

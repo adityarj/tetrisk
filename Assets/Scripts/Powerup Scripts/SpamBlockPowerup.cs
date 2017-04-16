@@ -6,15 +6,10 @@ using UnityEngine.Networking;
 public class SpamBlockPowerup : PowerUpController {
 	
 	private PowerupMessage spamMessage;
+	private NetworkClient client;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public override void setClient (NetworkClient client) {
+		this.client = client;
 	}
 
 	public override Powerup getPowerup ()
@@ -38,9 +33,9 @@ public class SpamBlockPowerup : PowerUpController {
 	}
 
 	//Execute the powerup once the fortune wheel has finished spinning
-	public override void executePowerup ()
-	{
+	public override void executePowerup () {
 		NetworkServer.SendToAll (7997, spamMessage);
+		client.Send (7997, spamMessage);
 	}
 		
 }

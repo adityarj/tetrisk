@@ -5,14 +5,10 @@ using UnityEngine.Networking;
 
 public class BaseElevatePowerup : PowerUpController {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	private NetworkClient client;
+
+	public override void setClient (NetworkClient client) {
+		this.client = client;
 	}
 
 	public override Powerup getPowerup ()
