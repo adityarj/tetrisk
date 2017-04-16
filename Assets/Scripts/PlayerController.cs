@@ -246,14 +246,14 @@ public class PlayerController : NetworkBehaviour {
 				activeBlockControl.setVelocity (new Vector3 (0, activeVel, 0));
 
 				if (BoundsChecker.checkValidBoundsLeft(activeBlock.transform,bounds[0])) {
-					if (moveLeft && !moveRight) {
+					if (moveLeft) {
 						activeBlock.transform.position += new Vector3((float)-0.5, 0, 0);
 						moveLeft = false;
 					}
 				}
 
 				if (BoundsChecker.checkValidBoundsRight(activeBlock.transform,bounds[1])) {
-					if (moveRight && !moveLeft) {
+					if (moveRight) {
 						activeBlock.transform.position += new Vector3((float)0.5, 0, 0);
 						moveRight = false;
 					}
