@@ -31,7 +31,7 @@ public class BlockSlowPowerup : PowerUpController {
 				base.setCollected (true);
 				slowMessage = new PowerupMessage ();
 				slowMessage.x = other.transform.position.x;
-				//NetworkServer.SendToAll (7998, slowMessage);
+				gameObject.GetComponent<SpriteRenderer> ().enabled = false;				
 			}
 		}
 	}

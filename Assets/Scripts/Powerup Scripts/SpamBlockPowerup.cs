@@ -28,6 +28,7 @@ public class SpamBlockPowerup : PowerUpController {
 				spamMessage = new PowerupMessage ();
 				spamMessage.x = other.transform.position.x;
 				//NetworkServer.SendToAll (7997, spamMessage);
+				gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 			}
 		}
 	}

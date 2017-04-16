@@ -27,6 +27,7 @@ public class BaseElevatePowerup : PowerUpController {
 		if (parentBlock.CompareTag("DeadBlock")) {
 			if (!base.getCollected()) {
 				base.setCollected (true);
+				gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 			}
 		}
 	}

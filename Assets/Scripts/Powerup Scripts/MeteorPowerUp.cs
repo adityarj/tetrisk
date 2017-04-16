@@ -63,7 +63,7 @@ public class MeteorPowerUp : PowerUpController {
 			if (!base.getCollected()) {
 				base.setCollected (true);
 				coord = new float[] { other.transform.position.x, other.transform.position.y };
-				//this.CmdSpawnMeteor (other.transform.position.x,other.transform.position.y);
+				gameObject.GetComponent<SpriteRenderer> ().enabled = false;
 			}
 		}
 	}
