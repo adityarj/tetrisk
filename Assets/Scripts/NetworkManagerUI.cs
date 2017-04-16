@@ -14,6 +14,7 @@ public class NetworkManagerUI : NetworkManager {
 
 	public void JoinClient() {
 		SetPort ();
+		SetIPAddress ();
 		NetworkManager.singleton.StartClient ();
 	}
 
@@ -22,7 +23,7 @@ public class NetworkManagerUI : NetworkManager {
 	}
 
 	public void SetIPAddress() {
-		string IPAddress = "localhost";
+		string IPAddress = GameObject.Find ("HostName").transform.FindChild ("Text").GetComponent<Text> ().text;
 		NetworkManager.singleton.networkAddress = IPAddress;
 	}
 }
