@@ -86,9 +86,15 @@ public class PlayerController : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnPowerUp() {
 		Debug.Log("Spawn powerup");
+
+		Vector3 powerUpPos;
+		do {
+			powerUpPos = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + powerUpSpawner.getLocation();
+		} while (Physics.CheckSphere(powerUpPos, 1f));
+
 		powerUp = Instantiate(powerUpSpawner.getPowerUp());
-		// TODO make position random
-		powerUp.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + powerUpSpawner.getLocation();
+		powerUp.transform.position = powerUpPos;
+
 		NetworkServer.SpawnWithClientAuthority (powerUp,gameObject);
 		RpcSyncSpawnedPowerUp (powerUp);
 	}
