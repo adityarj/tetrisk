@@ -8,17 +8,29 @@ public class PowerUpSpawner : MonoBehaviour {
 	private int rand;
 	public float[] powerUpProbs;
 
+	private float maxHeight = 8f; // can go up to 12
+	private float minHeight = 5f;
+
+	private float minWidth = 1f;
+	private float maxWidth = 3f;
+
 	public GameObject getPowerUp() {
 		rand = weightedProbability(powerUpProbs);
 		return powerUpList[rand];
 	}
 
 	public Vector3 getLocation() {
-		return new Vector3 (2, 6, 0);
-	}
+		float x = Random.Range(minWidth, maxWidth);
+		bool minus = (Random.Range(0,2) == 1);
+		if (minus) {
+			x *= -1;
+		}
 
-	void Update () {
-		Debug.Log(powerUpList[rand]);
+		float y = Random.Range(minHeight, maxHeight);
+		Debug.Log(x);
+		Debug.Log(y);
+
+		return new Vector3 (x, y, 0);
 	}
 
 	private int weightedProbability(float[] powerUpProbs) {
