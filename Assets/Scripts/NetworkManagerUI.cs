@@ -26,4 +26,8 @@ public class NetworkManagerUI : NetworkManager {
 		string IPAddress = GameObject.Find ("HostName").transform.FindChild ("Text").GetComponent<Text> ().text;
 		NetworkManager.singleton.networkAddress = IPAddress;
 	}
+
+	public void Disconnect() {
+		NetworkManager.singleton.StopHost ();
+	}
 }
