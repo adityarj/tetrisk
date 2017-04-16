@@ -40,7 +40,7 @@ public class FortuneWheelController : MonoBehaviour {
 			}
 		} else if (this.state.Equals(PowerupState.Waiting)) {
 			
-			if (this.iterWait > 50) {
+			if (this.iterWait > 150) {
 				this.powerUpController.executePowerup ();
 				this.state = PowerupState.Refreshing;
 				this.iterWait = 0;
@@ -50,7 +50,7 @@ public class FortuneWheelController : MonoBehaviour {
 		} else if (this.state.Equals(PowerupState.Refreshing)) {
 			
 			//Handle restored state
-			if (iterAngle > this.angle) {
+			if (iterAngle > (this.angle - (fullRotation*2 + 1))) {
 				powerUpController.DestoryPowerUp ();
 				this.state = PowerupState.NoPowerup;
 				this.angle = 0;
@@ -73,16 +73,16 @@ public class FortuneWheelController : MonoBehaviour {
 
 			if (powerup.Equals(Powerup.Meteor)) {
 				//Rotate to meteor
-				this.angle = fullRotation * 2 + 7;
+				this.angle = (fullRotation * 2) + 7;
 			} else if (powerup.Equals(Powerup.BlockSlow)) {
 				//Rotate to Block SLow
-				this.angle = fullRotation * 2 + (fullRotation/8)*3 + 7;
+				this.angle = (fullRotation * 2) + (fullRotation/8)*3 + 7;
 			} else if (powerup.Equals(Powerup.SpamBlock)) {
 				//Rotate to spam block
-				this.angle = fullRotation * 2 + (fullRotation/16)*3;
+				this.angle = (fullRotation * 2) + (fullRotation/16)*3;
 			} else if (powerup.Equals(Powerup.BaseElevate)) {
 				//Rotate to base elevate
-				this.angle = fullRotation * 2 + (fullRotation/4) + 7;
+				this.angle = (fullRotation * 2) + (fullRotation/4) + 7;
 			}
 
 			this.state = PowerupState.ActivePowerup;
