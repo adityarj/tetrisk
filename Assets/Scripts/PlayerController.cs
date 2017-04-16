@@ -69,6 +69,7 @@ public class PlayerController : NetworkBehaviour {
 			fortuneWheelController = FortuneWheel.GetComponentInChildren<FortuneWheelController> ();
 			SpawnBlock ();
 			InvokeRepeating("SpawnPowerUp", 5f, 10f);
+//			powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
 		}
 
 	}
@@ -87,7 +88,7 @@ public class PlayerController : NetworkBehaviour {
 		Debug.Log("Spawn powerup");
 		powerUp = Instantiate(powerUpSpawner.getPowerUp());
 		// TODO make position random
-		powerUp.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (2, 6, 0);
+		powerUp.transform.position = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + powerUpSpawner.getLocation();
 		NetworkServer.SpawnWithClientAuthority (powerUp,gameObject);
 		RpcSyncSpawnedPowerUp (powerUp);
 	}
