@@ -6,6 +6,8 @@ using UnityEngine.Networking;
 abstract public class PowerUpController : NetworkBehaviour {
 
 	private bool collected = false;
+	private bool moveBaseUp = false;
+	private bool executed = false;
 
 	abstract public void setClient (NetworkClient client);
 
@@ -21,7 +23,30 @@ abstract public class PowerUpController : NetworkBehaviour {
 		return this.collected;
 	}
 
+	public void setMoveBaseUp(bool moveBaseUp) {
+		this.moveBaseUp = moveBaseUp;
+	}
+
+	public bool getMoveBaseUp() {
+		return this.moveBaseUp;
+	}
+
+	public void setExecuted(bool executed) {
+		this.executed = executed;
+	}
+
+	public bool getExecuted() {
+		return this.executed;
+	}
+
 	public void DestoryPowerUp() {
-		Destroy(gameObject);
+		WaitAndDestroy(0.2f);
+	}
+
+	IEnumerator WaitAndDestroy(float time) {
+		while (gameObject != null) {
+			yield return new WaitForSeconds(time);
+			Destroy(gameObject);
+		}
 	}
 }

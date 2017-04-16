@@ -35,6 +35,8 @@ public class BaseElevatePowerup : PowerUpController {
 	//Execute the powerup once the fortune wheel has finished spinning
 	public override void executePowerup ()
 	{
-		Debug.Log ("WHY MAI LIFE LIKE DIS");
+		Debug.Log ("BLOCK GOES UPUPUPUP");
+		base.setMoveBaseUp(true);
+		base.setExecuted(true);
 	}
 }

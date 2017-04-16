@@ -12,7 +12,6 @@ public class PlayerController : NetworkBehaviour {
 	private BlockSpawner blockSpawner;
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
-	private int activePowerUpCount = 0;
 	private float activeVel = -1;
 	private bool spawnIsDisabled = false;
 	private int iterVar = 0;
@@ -36,6 +35,7 @@ public class PlayerController : NetworkBehaviour {
 	private PowerUpController powerUpControl;
 	private PowerUpSpawner powerUpSpawner;
 	private bool powerUpPresent;
+	private int moveBlocksCount;
 	[SerializeField]
 	private GameObject FortuneWheel;
 	private FortuneWheelController fortuneWheelController;
@@ -222,31 +222,33 @@ public class PlayerController : NetworkBehaviour {
 		if (isLocalPlayer) {
 
 			//The following is related to the base elevate, let's see if this can be further optimised powerup
-			if (activePowerUpCount > 0 && activePowerUpCount < 30) {
-				
-				activePowerUpCount += 1;
+			if (moveBlocksCount > 0 && moveBlocksCount < 30) {
+				moveBlocksCount += 1;
 				gameObject.transform.Find ("base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
 				gameObject.transform.Find ("Base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
 
 			} else {
-				activePowerUpCount = 0;
+				moveBlocksCount = 0;
 			}
 
 			if (powerUpControl != null) {
+				Debug.Log("powerupcontrol not null");
 				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
 					Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
 					//Rotate according to powerup needs
 					fortuneWheelController.HandlePowerup(powerUpControl);
-
-					if (powerUp.CompareTag ("power1") && (fortuneWheelController.getState().Equals(PowerupState.Waiting))) {
-						// do amazing powerup stuff here //
-						activePowerUpCount += 1;
-						
-					} 
-					Debug.Log("hi");
-					powerUpPresent = false;
+					Debug.Log("move bool: " + powerUpControl.getMoveBaseUp());
+					if (powerUpControl.getMoveBaseUp()) {
+						Debug.Log("starting");
+						moveBlocksCount = 1;
+						powerUpControl.setMoveBaseUp(false);
+					}
+					if (powerUpControl.getExecuted()) {
+						powerUpPresent = false;
+					}
 				}
+
 			}
 
 			if (activeBlockControl != null) {
