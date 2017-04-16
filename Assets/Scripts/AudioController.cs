@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour {
 
-	//initialized as on
-	bool audioOn = true;
+	public static bool audioOn = true;
 
+	void Start(){
+		//initialized as on
+		if (audioOn) {
+			AudioListener.pause = false;
+		} else {
+			AudioListener.pause = true;
+		}
+	}
+		
 	public void ToggleAudio(){
 		if (audioOn) {
 			AudioListener.pause = true;
