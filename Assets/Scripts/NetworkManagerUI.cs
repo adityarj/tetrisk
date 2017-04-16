@@ -8,12 +8,12 @@ public class NetworkManagerUI : NetworkManager {
 
 	public void StartupHost() {
 		SetPort ();
+		SetIPAddress ();
 		NetworkManager.singleton.StartHost ();
 	}
 
 	public void JoinClient() {
 		SetPort ();
-		IPAddress ();
 		NetworkManager.singleton.StartClient ();
 	}
 
@@ -21,7 +21,7 @@ public class NetworkManagerUI : NetworkManager {
 		NetworkManager.singleton.networkPort = 7777;
 	}
 
-	public void IPAddress() {
+	public void SetIPAddress() {
 		string IPAddress = "localhost";
 		NetworkManager.singleton.networkAddress = IPAddress;
 	}
