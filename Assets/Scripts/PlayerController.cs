@@ -107,8 +107,15 @@ public class PlayerController : NetworkBehaviour {
 
 	//Called when the server is started
 	public override void OnStartServer() {
-		if (isServer && !WinBarSingleton.peekInstance()) {
-			this.CmdSpawnWinBar ();
+
+		if (isServer) {
+			if (!WinBarSingleton.peekInstance ()) {
+				this.CmdSpawnWinBar ();
+			}
+			NetworkServer.RegisterHandler (7999, OnReceiveEndGameMessage);
+
+			NetworkServer.RegisterHandler (7998, OnReceiveSlowMessage);
+			NetworkServer.RegisterHandler (7997, OnReceiveSpamMessage);
 		}
 	}
 
@@ -119,13 +126,13 @@ public class PlayerController : NetworkBehaviour {
 	public override void OnStartClient ()
 	{
 		base.OnStartClient ();
-		NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
-		NetworkServer.RegisterHandler (7999, OnReceiveSlowMessage);
+		if (isClient) {
+			NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
 
-		NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
-		NetworkServer.RegisterHandler (7998, OnReceiveSlowMessage);
-		NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
-		NetworkServer.RegisterHandler (7997, OnReceiveSlowMessage);
+			NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
+			NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
+		}
+
 	}
 	//This function exists in case more code needs to be put in SpawnBlock()
 	public void SpawnBlock() {
@@ -237,6 +244,7 @@ public class PlayerController : NetworkBehaviour {
 				if (powerUpControl.getCollected()){
 					Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
 					//Rotate according to powerup needs
+					powerUpControl.setClient(NetworkManager.singleton.client);
 					fortuneWheelController.HandlePowerup(powerUpControl);
 
 					if (powerUp.CompareTag ("power1") && (fortuneWheelController.getState().Equals(PowerupState.Waiting))) {
