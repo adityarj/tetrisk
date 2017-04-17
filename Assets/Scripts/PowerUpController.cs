@@ -13,6 +13,10 @@ abstract public class PowerUpController : NetworkBehaviour {
 
 	abstract public void executePowerup ();
 
+	void FixedUpdate() {
+		gameObject.transform.Rotate (new Vector3 (0, 0, 50 * Time.deltaTime));
+	}
+
 	public void setCollected(bool collected) {
 		this.collected = collected;
 	}
