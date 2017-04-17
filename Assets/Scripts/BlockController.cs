@@ -30,7 +30,6 @@ public class BlockController : NetworkBehaviour {
 
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
-		gameObject.tag = "falling";
 	}
 
 	void Update() {
@@ -111,7 +110,16 @@ public class BlockController : NetworkBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
-		
+		if (gameObject.CompareTag("fallingrain")) {
+			if (collision.collider.transform.parent.CompareTag("DeadBlock")) {
+				gameObject.tag = "DeadBlock";
+				return;
+			} else {
+				return;
+			}
+		}
+
+
 		if (collision.collider.CompareTag ("wall")) {
 			return;
 		} else if (gameObject.CompareTag ("falling")) {

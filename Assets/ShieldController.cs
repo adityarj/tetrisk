@@ -14,7 +14,7 @@ public class ShieldController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		
 		Debug.Log ("<<Enter collision shield>>");
-		if (other.gameObject.CompareTag ("DeadBlock") || other.gameObject.CompareTag ("powerMeteorActive")) {
+		if (!other.gameObject.CompareTag ("falling")) {
 			
 			NetworkServer.Destroy (other.gameObject);
 
