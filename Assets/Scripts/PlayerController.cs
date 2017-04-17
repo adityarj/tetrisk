@@ -221,6 +221,10 @@ public class PlayerController : NetworkBehaviour {
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
 
+			if (fortuneWheelController.getState() == PowerupState.Refreshing) {
+				powerUpPresent = false;
+			}
+
 			if (powerUpControl != null) {
 				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected ()) {
@@ -228,9 +232,10 @@ public class PlayerController : NetworkBehaviour {
 					powerUpControl.setClient (NetworkManager.singleton.client);
 					fortuneWheelController.HandlePowerup (powerUpControl);				
 				}
-			} else {
-				powerUpPresent = false;
-			}
+			} 
+//				else {
+//				powerUpPresent = false;
+//			}
 
 			if (activeBlockControl != null) {
 				activeBlockControl.setVelocity (new Vector3 (0, activeVel, 0));
