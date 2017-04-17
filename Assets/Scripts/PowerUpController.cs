@@ -22,6 +22,6 @@ abstract public class PowerUpController : NetworkBehaviour {
 	}
 
 	public void DestoryPowerUp() {
-		Destroy(gameObject);
+		NetworkServer.Destroy (gameObject);
 	}
 }
