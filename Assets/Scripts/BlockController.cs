@@ -118,7 +118,9 @@ public class BlockController : NetworkBehaviour {
 				return;
 			}
 		}
-
+		if (collision.collider.transform.parent.CompareTag("fallingrain")) {
+			return;
+		}
 
 		if (collision.collider.CompareTag ("wall")) {
 			return;
