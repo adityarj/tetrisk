@@ -20,7 +20,6 @@ public class SpamBlockPowerup : PowerUpController {
 	//Detect powerup
 	void OnTriggerStay2D(Collider2D other) {
 
-		Debug.Log ("Spam block powerup method");
 		GameObject parentBlock = other.transform.parent.gameObject;
 		if (parentBlock.CompareTag("DeadBlock")) {
 			if (!base.getCollected()) {

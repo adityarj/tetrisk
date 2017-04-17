@@ -46,7 +46,7 @@ public class BlockController : NetworkBehaviour {
 					shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
 
 					foreach (Transform sub in subList) {
-						if (shadows [i].transform.position.x == sub.transform.position.x) {
+						if (System.Math.Round(shadows [i].transform.position.x,2) == System.Math.Round(sub.transform.position.x,2)) {
 							shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0f);
 						}
 					}

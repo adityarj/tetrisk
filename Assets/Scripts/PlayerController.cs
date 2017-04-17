@@ -246,7 +246,7 @@ public class PlayerController : NetworkBehaviour {
 			if (powerUpControl != null) {
 				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected()){
-					Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
+					//Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
 					//Rotate according to powerup needs
 					powerUpControl.setClient(NetworkManager.singleton.client);
 					fortuneWheelController.HandlePowerup(powerUpControl);
