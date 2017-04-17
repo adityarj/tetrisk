@@ -26,6 +26,7 @@ public class MeteorPowerUp : PowerUpController {
 		return Powerup.Meteor;
 	}
 
+	//Spawn the meteor at all positions that are players, but not the triggered player
 	[Command]
 	private void CmdSpawnMeteor(float x, float y) {
 		
