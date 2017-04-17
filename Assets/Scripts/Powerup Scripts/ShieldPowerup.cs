@@ -15,7 +15,7 @@ public class ShieldPowerup : PowerUpController {
 	}
 
 	public override Powerup getPowerup() {
-		return Powerup.Shield;
+		return Powerup.BaseElevate;
 	}
 
 	public bool checkBounds(Transform playerTransform, Vector3 other) {
