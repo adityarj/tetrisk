@@ -29,13 +29,15 @@ public class NetworkManagerUI : NetworkManager {
 
 	void OnLevelWasLoaded(int level){
 		if (level == 0) {
-			SetUpMenuSceneButtons ();
+			StartCoroutine (SetUpMenuSceneButtons ());
+//			SetUpMenuSceneButtons ();
 		} else {
 			SetUpGameSceneButtons ();
 		}
 	}
 
-	void SetUpMenuSceneButtons(){
+	IEnumerator SetUpMenuSceneButtons(){
+		yield return new WaitForSeconds (0.3f);
 		GameObject.Find ("HostButton").GetComponent<Button> ().onClick.RemoveAllListeners();
 		GameObject.Find ("HostButton").GetComponent<Button> ().onClick.AddListener(StartupHost);
 
