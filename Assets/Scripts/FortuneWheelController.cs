@@ -82,7 +82,7 @@ public class FortuneWheelController : MonoBehaviour {
 			} else if (powerup.Equals(Powerup.SpamBlock)) {
 				//Rotate to spam block
 				this.angle = (fullRotation * 2) + (fullRotation/16)*3;
-			} else if (powerup.Equals(Powerup.BaseElevate)) {
+			} else if (powerup.Equals(Powerup.Shield)) {
 				//Rotate to base elevate
 				this.angle = (fullRotation * 2) + (fullRotation/4) + 7;
 			}
