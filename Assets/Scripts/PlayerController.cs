@@ -27,6 +27,7 @@ public class PlayerController : NetworkBehaviour {
 	[SerializeField]
 	private GameObject gameWinUI;
 	private GameObject gameWinUIInstance;
+	private bool EndFlag = false;
 
 	//Related to PowerUps
 	private GameObject powerUp;
@@ -173,21 +174,37 @@ public class PlayerController : NetworkBehaviour {
 	public void CmdSpawnWinBar() {
 		this.localWinBar = Instantiate (WinBarSingleton.getInstance(winBar));
 		this.localWinBar.transform.position = new Vector3 (0, 9, 0);
-		this.localWinBar.GetComponent<WinBarController> ().setClient (NetworkManager.singleton.client);
 		Debug.Log (this.localWinBar);
 		NetworkServer.Spawn (this.localWinBar);
 	}
 
-	//When a message is received to end the game
-	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
-		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
-		Debug.Log ("Player " + endgame.player + " won");
+	[Command]
+	public void CmdReceiveEndGameMessage(bool endCond) {
+		if (!this.EndFlag) {
 
-		if (isLocalPlayer) {
-			if (BoundsChecker.checkValidBoundsTotal (endgame.x, bounds)) {
+			if (endCond) {
 				Instantiate (this.gameWinUI);
 			} else {
 				Instantiate (this.gameOverUI);
+			}
+			this.EndFlag = true;
+		}
+	}
+	//When a message is received to end the game
+	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
+		
+		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
+		Debug.Log ("Player " + endgame.player + " won");
+		Debug.Log (isLocalPlayer);
+
+		if (isLocalPlayer) {
+			Debug.Log ("IsLocalPlayer");
+			if (BoundsChecker.checkValidBoundsTotal (endgame.x, bounds)) {
+				Instantiate (this.gameWinUI);
+				this.CmdReceiveEndGameMessage (false);
+			} else {
+				Instantiate (this.gameOverUI);
+				this.CmdReceiveEndGameMessage (true);
 			}
 		}
 	}
