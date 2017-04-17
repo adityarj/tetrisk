@@ -206,7 +206,7 @@ public class PlayerController : NetworkBehaviour {
 
 		Debug.Log (spamMessage.x + " " + + bounds[0]+"  "+bounds[1]);
 
-		if (BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
+		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
 			Debug.Log ("Spam powerup in effect");
 			this.spawnIsDisabled = true;
 			InvokeRepeating ("waitForTime", 1.5f, 1.5f);

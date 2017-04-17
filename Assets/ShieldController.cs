@@ -8,7 +8,6 @@ public class ShieldController : MonoBehaviour {
 	private bool setCountdown = false;
 
 	void DestroyShield() {
-		Debug.Log ("DESTROY THIS SHIT");
 		NetworkServer.Destroy (gameObject);
 	}
 
