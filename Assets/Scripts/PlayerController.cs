@@ -135,23 +135,6 @@ public class PlayerController : NetworkBehaviour {
 		this.CmdSpawnBlock(this.spawnPosition);
 	}
 
-	//Function designed to wait and spawn blocks at regular intervals
-	private void waitForTime() {
-		if (this.iterVar >= 5) {
-			this.iterVar = 0;
-			this.spawnIsDisabled = false;
-			CancelInvoke ();
-			return;
-		} else {
-			Debug.Log ("Block is spawned");
-			this.spawnIsDisabled = true;
-			this.activeBlockControl = null;
-			this.activeBlock.tag = "DeadBlock";
-			this.SpawnBlock ();
-			this.iterVar += 1;
-		}
-	}
-
 	//Command to the server to spawn a block over the network
 	[Command]
 	public void CmdSpawnBlock(Vector3 position) {
@@ -174,7 +157,6 @@ public class PlayerController : NetworkBehaviour {
 	public void CmdSpawnWinBar() {
 		this.localWinBar = Instantiate (WinBarSingleton.getInstance(winBar));
 		this.localWinBar.transform.position = new Vector3 (0, 9, 0);
-		Debug.Log (this.localWinBar);
 		NetworkServer.Spawn (this.localWinBar);
 	}
 
@@ -194,8 +176,6 @@ public class PlayerController : NetworkBehaviour {
 	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
 		
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
-		Debug.Log ("Player " + endgame.player + " won");
-		Debug.Log (isLocalPlayer);
 
 		if (isLocalPlayer) {
 			Debug.Log ("IsLocalPlayer");
@@ -211,7 +191,6 @@ public class PlayerController : NetworkBehaviour {
 
 	//When a message is received to apply the slow powerup
 	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
-		Debug.Log ("Slow powerup");
 		PowerupMessage slowMessage = networkMessage.ReadMessage <PowerupMessage> ();
 
 		Debug.Log (slowMessage.x + " " + bounds[0]+"  "+bounds[1]);
@@ -224,7 +203,6 @@ public class PlayerController : NetworkBehaviour {
 
 	//When a message is received to apply the spam blocks powerup
 	public void OnReceiveSpamMessage(NetworkMessage networkMessage) {
-		Debug.Log ("Spam blocks message");
 		PowerupMessage spamMessage = networkMessage.ReadMessage<PowerupMessage> ();
 
 		Debug.Log (spamMessage.x + " " + + bounds[0]+"  "+bounds[1]);
@@ -243,32 +221,15 @@ public class PlayerController : NetworkBehaviour {
 		//Only transform the local objects, othewise ignore
 		if (isLocalPlayer) {
 
-			//The following is related to the base elevate, let's see if this can be further optimised powerup
-			if (activePowerUpCount > 0 && activePowerUpCount < 30) {
-				
-				activePowerUpCount += 1;
-				gameObject.transform.Find ("base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
-				gameObject.transform.Find ("Base").gameObject.transform.position += new Vector3 (0, 1 * Time.deltaTime, 0);
-
-			} else {
-				activePowerUpCount = 0;
-			}
-
 			if (powerUpControl != null) {
 				//Debug.Log("collected: " + powerUpControl.getCollected());
-				if (powerUpControl.getCollected()){
-					//Debug.Log ("powerup: " + powerUp + " fortuneWheelState: " + fortuneWheelController.getState ());
+				if (powerUpControl.getCollected ()) {
 					//Rotate according to powerup needs
-					powerUpControl.setClient(NetworkManager.singleton.client);
-					fortuneWheelController.HandlePowerup(powerUpControl);
-
-					if (powerUp.CompareTag ("power1") && (fortuneWheelController.getState().Equals(PowerupState.Waiting))) {
-						// do amazing powerup stuff here //
-						activePowerUpCount += 1;
-						
-					} 
-					powerUpPresent = false;
+					powerUpControl.setClient (NetworkManager.singleton.client);
+					fortuneWheelController.HandlePowerup (powerUpControl);				
 				}
+			} else {
+				powerUpPresent = false;
 			}
 
 			if (activeBlockControl != null) {
