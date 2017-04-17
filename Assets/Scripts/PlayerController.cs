@@ -158,7 +158,7 @@ public class PlayerController : NetworkBehaviour {
 	[Command]
 	public void CmdReceiveEndGameMessage(bool endCond) {
 		if (!this.EndFlag) {
-
+			WinBarSingleton.resetInstance ();
 			if (endCond) {
 				Instantiate (this.gameWinUI);
 			} else {
@@ -171,7 +171,6 @@ public class PlayerController : NetworkBehaviour {
 	public void OnReceiveEndGameMessage(NetworkMessage networkMessage) {
 		
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
-
 		if (isLocalPlayer) {
 			Debug.Log ("IsLocalPlayer");
 			if (BoundsChecker.checkValidBoundsTotal (endgame.x, bounds)) {

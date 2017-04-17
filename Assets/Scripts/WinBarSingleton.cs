@@ -19,4 +19,8 @@ public static class WinBarSingleton {
 			return localWinBar;
 		}
 	}
+
+	public static void resetInstance() {
+		localWinBar = null;
+	}
 }
