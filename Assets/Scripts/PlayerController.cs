@@ -16,14 +16,8 @@ public class PlayerController : NetworkBehaviour {
 	private float activeVel = -1;
 	private bool spawnIsDisabled = false;
 	private int iterVar = 0;
-//	Camera playerCam;
 
-//	void Awake() {
-//		playerCam = GetComponentInChildren<Camera> ();
-//		playerCam.gameObject.SetActive (false);
-//	}
-	//Related to Winning Bar
-
+	//Related to winbar
 	[SerializeField]
 	private GameObject winBar;
 	private GameObject localWinBar;
@@ -53,7 +47,6 @@ public class PlayerController : NetworkBehaviour {
 		bounds [1] = spawnPosition.x + 3.5;
 		bounds [0] = spawnPosition.x - 3.5;
 
-
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
 		powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
 
@@ -69,7 +62,6 @@ public class PlayerController : NetworkBehaviour {
 			fortuneWheelController = FortuneWheel.GetComponentInChildren<FortuneWheelController> ();
 			SpawnBlock ();
 			InvokeRepeating("SpawnPowerUp", 5f, 10f);
-//			powerUpSpawner = FindObjectOfType<PowerUpSpawner> ();
 		}
 
 	}
@@ -119,10 +111,6 @@ public class PlayerController : NetworkBehaviour {
 		}
 	}
 
-//	public override void OnStartLocalPlayer ()
-//	{
-//		playerCam.gameObject.SetActive (true);
-//	}
 	public override void OnStartClient ()
 	{
 		base.OnStartClient ();

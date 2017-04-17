@@ -6,5 +6,6 @@ public enum Powerup {
 	Meteor,
 	BlockSlow,
 	SpamBlock,
-	BaseElevate
+	BaseElevate,
+	Shield
 }
