@@ -34,7 +34,7 @@ public class MeteorPowerUp : PowerUpController {
 		List<Transform> playerPositions = networkManager.startPositions;
 
 		foreach (Transform playerPosition in playerPositions) {
-			if (!this.checkBounds (playerPosition, new Vector3(x,y,0))) {
+			if (this.checkBounds (playerPosition, new Vector3(x,y,0))) {
 				Debug.Log (playerPosition.position);
 				actualMeteor = Instantiate (Meteor);
 

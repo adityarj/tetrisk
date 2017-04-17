@@ -8,18 +8,20 @@ public class ShieldController : MonoBehaviour {
 	private bool setCountdown = false;
 
 	void DestroyShield() {
+		Debug.Log ("DESTROY THIS SHIT");
 		NetworkServer.Destroy (gameObject);
 	}
 
-	void OnTriggerEnter2d(Collider2D other) {
+	void OnTriggerEnter2D(Collider2D other) {
 		
-		if (other.gameObject.CompareTag ("DeadBlock") || other.gameObject.CompareTag ("powerMeteor")) {
+		Debug.Log ("<<Enter collision shield>>");
+		if (other.gameObject.CompareTag ("DeadBlock") || other.gameObject.CompareTag ("powerMeteorActive")) {
 			
-			this.setCountdown = true;
 			NetworkServer.Destroy (other.gameObject);
 
 			if (!this.setCountdown) {
 				Invoke ("DestroyShield", 4);
+				this.setCountdown = true;
 			}
 		}
 		
