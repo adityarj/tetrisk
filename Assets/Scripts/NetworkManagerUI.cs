@@ -24,7 +24,12 @@ public class NetworkManagerUI : NetworkManager {
 
 	public void SetIPAddress() {
 		string IPAddress = GameObject.Find ("HostName").transform.FindChild ("Text").GetComponent<Text> ().text;
-		NetworkManager.singleton.networkAddress = IPAddress;
+	
+		if (IPAddress.Length == 0) {
+			NetworkManager.singleton.networkAddress = "localhost";
+		} else {
+			NetworkManager.singleton.networkAddress = IPAddress;
+		}
 	}
 
 	void OnLevelWasLoaded(int level){

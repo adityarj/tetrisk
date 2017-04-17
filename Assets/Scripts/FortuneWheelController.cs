@@ -26,8 +26,9 @@ public class FortuneWheelController : MonoBehaviour {
 	void FixedUpdate () {
 		
 		if (this.state.Equals(PowerupState.NoPowerup)) {
-			
+
 			return;
+
 		} else if (this.state.Equals(PowerupState.ActivePowerup)) {
 			
 			//Handle rotation to designated coordinates
@@ -38,6 +39,7 @@ public class FortuneWheelController : MonoBehaviour {
 				gameObject.transform.Rotate (new Vector3 (0, 0, rotationSpeed * Time.deltaTime));
 				this.iterAngle += 1;
 			}
+
 		} else if (this.state.Equals(PowerupState.Waiting)) {
 			
 			if (this.iterWait > 150) {

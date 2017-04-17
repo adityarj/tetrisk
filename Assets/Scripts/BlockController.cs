@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class BlockController : MonoBehaviour {
+public class BlockController : NetworkBehaviour {
 
 	private Rigidbody2D rb;
 	private bool spawnSame = false;
@@ -17,39 +18,47 @@ public class BlockController : MonoBehaviour {
 
 	private GameObject[] shadows = new GameObject[4];
 
+	public override void OnStartAuthority() {
+		int i = 0;
+		foreach (Transform childTransform in gameObject.transform) {
+			shadows [i] = Instantiate (shadow);
+			shadows [i].transform.position = childTransform.position - new Vector3 (0, 12, 0);
+			i++;
+		}
+
+	}
+
 	void Start () {
 		rb = this.GetComponent<Rigidbody2D> ();
 		gameObject.tag = "falling";
-		int i = 0;
-		foreach (Transform childTransform in gameObject.transform) {
-			shadows[i] = Instantiate(shadow);
-			shadows[i].transform.position = childTransform.position - new Vector3(0,12,0);
-			i++;
-		}
 	}
 
 	void Update() {
-		int i = 0;
-		List<Transform> subList = new List<Transform> ();
-		foreach (Transform childTransform in gameObject.transform) {
-			
-			if (!gameObject.CompareTag ("DeadBlock")) {
-				shadows [i].transform.position = childTransform.position - new Vector3(0,12,0);
+		
+		if (hasAuthority) {
+			int i = 0;
+			List<Transform> subList = new List<Transform> ();
+			foreach (Transform childTransform in gameObject.transform) {
+				
+				if (!gameObject.CompareTag ("DeadBlock")) {
+					shadows [i].transform.position = childTransform.position - new Vector3 (0, 12, 0);
 
-				shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
+					shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0.3f);
 
-				foreach (Transform sub in subList) {
-					if (shadows [i].transform.position.x == sub.transform.position.x) {
-						shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0f);
+					foreach (Transform sub in subList) {
+						if (shadows [i].transform.position.x == sub.transform.position.x) {
+							shadows [i].GetComponent<SpriteRenderer> ().color = new Color (1f, 1f, 1f, 0f);
+						}
 					}
-				}
-				subList.Add (shadows [i].transform);
-			} else {
-				Destroy (shadows[i]);
+					subList.Add (shadows [i].transform);
+				} else {
+					Destroy (shadows [i]);
 
+				}
+				i++;
 			}
-			i++;
 		}
+
 		if (gameObject.CompareTag("DeadBlock")) {
 			if (rb.velocity.y > -1f) { 
 			foreach (Transform childTransform in gameObject.transform) {
