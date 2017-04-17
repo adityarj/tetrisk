@@ -6,15 +6,20 @@ using UnityEngine.Networking;
 public class WinBarController : NetworkBehaviour {
 	private Rigidbody2D rb;
 	private bool win;
+	private NetworkClient client;
+
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D> ();
 		rb.velocity = new Vector3 (0, -0.3f, 0);
+
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	public void setClient(NetworkClient client) {
+		if (this.client == null) {
+			this.client = client;
+		}
+		Debug.Log (this.client);
 	}
 
 	public void setWin(bool win) {
@@ -41,30 +46,24 @@ public class WinBarController : NetworkBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		
-		GameObject parentBlock = other.transform.parent.gameObject;
+		//Check if this function has already been called
+		if (!this.getWin()) {
+			
+			GameObject parentBlock = other.transform.parent.gameObject;
 
-		Debug.Log ("win tag: " + parentBlock.tag);
+			//If the parent is a deadblock, then end condition, sendd a message to stop the game
+			if (parentBlock.CompareTag ("DeadBlock")) {
+				setWin (true);
+				Debug.Log ("Win! Game Over");
 
-		if (parentBlock.CompareTag("DeadBlock")) {
-			setWin(true);
-			Debug.Log("Win! Game Over");
-			NetworkManager networkManager = NetworkManager.singleton;
-			List<Transform> playerPositions = networkManager.startPositions;
+				EndGameMessage endgame = new EndGameMessage ();
 
-			int i = 1;
-			foreach (Transform playerPosition in playerPositions) {
-				if (checkBounds(playerPosition, parentBlock.transform)) {
-
-					EndMessage endMessage;
-					endMessage.finalWords = "Player " + i + " won";
-					EndGameMessage endgame = new EndGameMessage ();
-
-					endgame.player = i;
-					endgame.message = "What a baller";
-					NetworkServer.SendToAll (7999, endgame);
-				}
+				endgame.player = 0;
+				endgame.message = "What a baller";
+				endgame.x = other.transform.position.x;
+				NetworkServer.SendToAll (7999, endgame);
+				this.client.Send (7999, endgame);
 			}
-			//CmdGameOver ();
 		}
 	}
 }

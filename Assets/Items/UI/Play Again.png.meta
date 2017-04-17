@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 25fc16dda5444dc4d93ffd3c5c2f1b11
 timeCreated: 1492436909
+=======
+guid: bcc71f9e30a80db4ca58a7c860bfc4bd
+timeCreated: 1492436889
+>>>>>>> added ending prefabs and stuff
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}

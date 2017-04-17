@@ -24,6 +24,9 @@ public class PlayerController : NetworkBehaviour {
 	[SerializeField]
 	private GameObject gameOverUI;
 	private GameObject gameOverUIInstance;
+	[SerializeField]
+	private GameObject gameWinUI;
+	private GameObject gameWinUIInstance;
 
 	//Related to PowerUps
 	private GameObject powerUp;
@@ -115,6 +118,7 @@ public class PlayerController : NetworkBehaviour {
 	{
 		base.OnStartClient ();
 		if (isClient) {
+			winBar.GetComponent<WinBarController> ().setClient (NetworkManager.singleton.client);
 			NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
 
 			NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
@@ -179,10 +183,12 @@ public class PlayerController : NetworkBehaviour {
 		EndGameMessage endgame = networkMessage.ReadMessage<EndGameMessage> ();
 		Debug.Log ("Player " + endgame.player + " won");
 
-		Debug.Log (this.gameOverUI);
-
-		if (this.gameOverUIInstance == null) {
-			this.gameOverUIInstance = Instantiate (this.gameOverUI);
+		if (isLocalPlayer) {
+			if (BoundsChecker.checkValidBoundsTotal (endgame.x, bounds)) {
+				Instantiate (this.gameWinUI);
+			} else {
+				Instantiate (this.gameOverUI);
+			}
 		}
 	}
 
