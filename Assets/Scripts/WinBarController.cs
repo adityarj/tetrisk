@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class WinBarController : NetworkBehaviour {
 	private Rigidbody2D rb;
 	private bool win;
-	private NetworkClient client;
+	private NetworkClient clientLocal;
 
 	// Use this for initialization
 	void Start () {
@@ -16,10 +16,10 @@ public class WinBarController : NetworkBehaviour {
 	}
 	
 	public void setClient(NetworkClient client) {
-		if (this.client == null) {
-			this.client = client;
+		if (this.clientLocal == null) {
+			Debug.Log (this.clientLocal);
+			this.clientLocal = client;
 		}
-		Debug.Log (this.client);
 	}
 
 	public void setWin(bool win) {
@@ -39,16 +39,12 @@ public class WinBarController : NetworkBehaviour {
 		public string finalWords;
 	}
 
-	[Command]
-	void CmdGameOver() {
-		NetworkManager.Shutdown ();
-	}
-
 	void OnTriggerEnter2D(Collider2D other) {
 		
 		//Check if this function has already been called
 		if (!this.getWin()) {
-			
+
+			Debug.Log (clientLocal);
 			GameObject parentBlock = other.transform.parent.gameObject;
 
 			//If the parent is a deadblock, then end condition, sendd a message to stop the game
@@ -62,7 +58,7 @@ public class WinBarController : NetworkBehaviour {
 				endgame.message = "What a baller";
 				endgame.x = other.transform.position.x;
 				NetworkServer.SendToAll (7999, endgame);
-				this.client.Send (7999, endgame);
+				clientLocal.Send (7999, endgame);
 			}
 		}
 	}

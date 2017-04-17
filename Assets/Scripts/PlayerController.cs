@@ -118,7 +118,6 @@ public class PlayerController : NetworkBehaviour {
 	{
 		base.OnStartClient ();
 		if (isClient) {
-			winBar.GetComponent<WinBarController> ().setClient (NetworkManager.singleton.client);
 			NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
 
 			NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
@@ -174,6 +173,7 @@ public class PlayerController : NetworkBehaviour {
 	public void CmdSpawnWinBar() {
 		this.localWinBar = Instantiate (WinBarSingleton.getInstance(winBar));
 		this.localWinBar.transform.position = new Vector3 (0, 9, 0);
+		this.localWinBar.GetComponent<WinBarController> ().setClient (NetworkManager.singleton.client);
 		Debug.Log (this.localWinBar);
 		NetworkServer.Spawn (this.localWinBar);
 	}
