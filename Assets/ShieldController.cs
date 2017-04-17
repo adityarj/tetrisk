@@ -12,12 +12,16 @@ public class ShieldController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2d(Collider2D other) {
-		if (!this.setCountdown) {
-			if (other.gameObject.CompareTag ("Untagged")) {
-				this.setCountdown = true;
-				NetworkServer.Destroy (other.gameObject);
+		
+		if (other.gameObject.CompareTag ("DeadBlock") || other.gameObject.CompareTag ("powerMeteor")) {
+			
+			this.setCountdown = true;
+			NetworkServer.Destroy (other.gameObject);
+
+			if (!this.setCountdown) {
 				Invoke ("DestroyShield", 4);
 			}
 		}
+		
 	}
 }
