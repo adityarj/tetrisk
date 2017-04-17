@@ -169,7 +169,7 @@ public class PlayerController : NetworkBehaviour {
 	[Command]
 	public void CmdSpawnWinBar() {
 		this.localWinBar = Instantiate (WinBarSingleton.getInstance(winBar));
-		this.localWinBar.transform.position = new Vector3 (5, 14, 0);
+		this.localWinBar.transform.position = new Vector3 (0, 9, 0);
 		Debug.Log (this.localWinBar);
 		NetworkServer.Spawn (this.localWinBar);
 	}
