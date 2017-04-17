@@ -30,4 +30,8 @@ public class NetworkManagerUI : NetworkManager {
 	public void Disconnect() {
 		NetworkManager.singleton.StopHost ();
 	}
+
+	public void Exit() {
+		Application.Quit ();
+	}
 }
