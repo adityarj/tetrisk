@@ -12,7 +12,6 @@ public class PlayerController : NetworkBehaviour {
 	private BlockSpawner blockSpawner;
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
-	private int activePowerUpCount = 0;
 	private float activeVel = -1;
 	private bool spawnIsDisabled = false;
 	private int iterVar = 0;
@@ -109,9 +108,7 @@ public class PlayerController : NetworkBehaviour {
 				this.CmdSpawnWinBar ();
 			}
 			NetworkServer.RegisterHandler (7999, OnReceiveEndGameMessage);
-
 			NetworkServer.RegisterHandler (7998, OnReceiveSlowMessage);
-			NetworkServer.RegisterHandler (7997, OnReceiveSpamMessage);
 		}
 	}
 
@@ -120,9 +117,7 @@ public class PlayerController : NetworkBehaviour {
 		base.OnStartClient ();
 		if (isClient) {
 			NetworkManager.singleton.client.RegisterHandler (7999, OnReceiveEndGameMessage);
-
 			NetworkManager.singleton.client.RegisterHandler (7998, OnReceiveSlowMessage);
-			NetworkManager.singleton.client.RegisterHandler (7997, OnReceiveSpamMessage);
 		}
 
 	}
@@ -201,20 +196,6 @@ public class PlayerController : NetworkBehaviour {
 		}
 	}
 
-	//When a message is received to apply the spam blocks powerup
-	public void OnReceiveSpamMessage(NetworkMessage networkMessage) {
-		PowerupMessage spamMessage = networkMessage.ReadMessage<PowerupMessage> ();
-
-		Debug.Log (spamMessage.x + " " + + bounds[0]+"  "+bounds[1]);
-
-		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
-			Debug.Log ("Spam powerup in effect");
-			this.spawnIsDisabled = true;
-			InvokeRepeating ("waitForTime", 1.5f, 1.5f);
-
-		}
-	}
-
 	// Update is called once per frame
 	void Update () {
 
@@ -226,16 +207,12 @@ public class PlayerController : NetworkBehaviour {
 			}
 
 			if (powerUpControl != null) {
-				//Debug.Log("collected: " + powerUpControl.getCollected());
 				if (powerUpControl.getCollected ()) {
 					//Rotate according to powerup needs
 					powerUpControl.setClient (NetworkManager.singleton.client);
 					fortuneWheelController.HandlePowerup (powerUpControl);				
 				}
 			} 
-//				else {
-//				powerUpPresent = false;
-//			}
 
 			if (activeBlockControl != null) {
 				activeBlockControl.setVelocity (new Vector3 (0, activeVel, 0));
@@ -284,7 +261,6 @@ public class PlayerController : NetworkBehaviour {
 					activeBlockControl.applyDownwardForce ();
 				}
 
-				//Debug.Log (this.spawnIsDisabled);
 				//Spawn block if necessary based on the status player
 				if (activeBlockControl.GetSpawnNext()) {
 					this.activeVel = -1f;

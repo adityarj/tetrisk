@@ -23,6 +23,7 @@ public class Destroyer : MonoBehaviour {
 				Destroy(this.parentBlock);
 			}
 		} catch (NullReferenceException ex) {
+			Debug.Log (ex.Message);
 		}
 
 	}

@@ -6,9 +6,7 @@ using UnityEngine.Networking;
 public class BlockController : NetworkBehaviour {
 
 	private Rigidbody2D rb;
-	private bool spawnSame = false;
 	private bool spawnNext = false;
-	private bool hasRun = false;
 	[SerializeField] private GameObject winBar;
 	[SerializeField] private GameObject shadow;
 
@@ -52,7 +50,6 @@ public class BlockController : NetworkBehaviour {
 					subList.Add (shadows [i].transform);
 				} else {
 					Destroy (shadows [i]);
-
 				}
 				i++;
 			}
