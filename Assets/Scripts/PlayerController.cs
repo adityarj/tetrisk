@@ -50,8 +50,8 @@ public class PlayerController : NetworkBehaviour {
 		
 		//Start spawner
 		spawnPosition = new Vector3 (transform.position.x, transform.position.y, transform.position.z) + new Vector3 (0, 18, 0);
-		bounds [1] = spawnPosition.x + 3;
-		bounds [0] = spawnPosition.x - 3;
+		bounds [1] = spawnPosition.x + 3.5;
+		bounds [0] = spawnPosition.x - 3.5;
 
 
 		blockSpawner = FindObjectOfType<BlockSpawner> ();
@@ -201,8 +201,9 @@ public class PlayerController : NetworkBehaviour {
 	//When a message is received to apply the slow powerup
 	public void OnReceiveSlowMessage(NetworkMessage networkMessage) {
 		Debug.Log ("Slow powerup");
-
 		PowerupMessage slowMessage = networkMessage.ReadMessage <PowerupMessage> ();
+
+		Debug.Log (slowMessage.x + " " + bounds[0]+"  "+bounds[1]);
 		if (!BoundsChecker.checkValidBoundsTotal (slowMessage.x, bounds)) {
 			Debug.Log ("Slow powerup in effect");
 			activeVel = -0.2f;
@@ -214,6 +215,9 @@ public class PlayerController : NetworkBehaviour {
 	public void OnReceiveSpamMessage(NetworkMessage networkMessage) {
 		Debug.Log ("Spam blocks message");
 		PowerupMessage spamMessage = networkMessage.ReadMessage<PowerupMessage> ();
+
+		Debug.Log (spamMessage.x + " " + + bounds[0]+"  "+bounds[1]);
+
 		if (!BoundsChecker.checkValidBoundsTotal (spamMessage.x, bounds)) {
 			Debug.Log ("Spam powerup in effect");
 			this.spawnIsDisabled = true;
