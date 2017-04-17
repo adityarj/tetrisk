@@ -27,6 +27,27 @@ public class NetworkManagerUI : NetworkManager {
 		NetworkManager.singleton.networkAddress = IPAddress;
 	}
 
+	void OnLevelWasLoaded(int level){
+		if (level == 0) {
+			SetUpMenuSceneButtons ();
+		} else {
+			SetUpGameSceneButtons ();
+		}
+	}
+
+	void SetUpMenuSceneButtons(){
+		GameObject.Find ("HostButton").GetComponent<Button> ().onClick.RemoveAllListeners();
+		GameObject.Find ("HostButton").GetComponent<Button> ().onClick.AddListener(StartupHost);
+
+		GameObject.Find ("JoinButton").GetComponent<Button> ().onClick.RemoveAllListeners();
+		GameObject.Find ("JoinButton").GetComponent<Button> ().onClick.AddListener(JoinClient);
+	}
+
+	void SetUpGameSceneButtons(){
+		GameObject.Find ("DisconnectButton").GetComponent<Button> ().onClick.RemoveAllListeners();
+		GameObject.Find ("DisconnectButton").GetComponent<Button> ().onClick.AddListener(NetworkManager.singleton.StopHost);
+	}
+
 	public void Disconnect() {
 		NetworkManager.singleton.StopHost ();
 	}
