@@ -113,6 +113,7 @@ public class BlockController : NetworkBehaviour {
 		if (gameObject.CompareTag("fallingrain")) {
 			if (collision.collider.transform.parent.CompareTag("DeadBlock")) {
 				gameObject.tag = "DeadBlock";
+                GetComponent<AudioSource>().Play();
 				return;
 			} else {
 				return;
@@ -126,7 +127,8 @@ public class BlockController : NetworkBehaviour {
 			return;
 		} else if (gameObject.CompareTag ("falling")) {
 			gameObject.tag = "DeadBlock";
-			SetSpawnNext (true);
+            GetComponent<AudioSource>().Play();
+            SetSpawnNext (true);
 		} else {
 			return;
 		}
