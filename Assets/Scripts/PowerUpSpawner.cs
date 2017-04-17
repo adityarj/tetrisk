@@ -51,4 +51,9 @@ public class PowerUpSpawner : MonoBehaviour {
 		}
 		return powerUpProbs.Length - 1;
 	}
+
+	public void increaseHeight() {
+		maxHeight += 1f;
+		minHeight += 1f;
+	}
  }
