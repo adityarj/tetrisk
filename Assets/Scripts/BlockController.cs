@@ -56,7 +56,7 @@ public class BlockController : NetworkBehaviour {
 		}
 
 		if (gameObject.CompareTag("DeadBlock")) {
-			if (rb.velocity.y > -1f) { 
+			if (rb.velocity.y > -2f) { 
 			foreach (Transform childTransform in gameObject.transform) {
 				if (childTransform.position.y > maxy) {
 					maxy = childTransform.position.y;

@@ -12,7 +12,7 @@ public class PlayerController : NetworkBehaviour {
 	private BlockSpawner blockSpawner;
 	private double[] bounds = new double[2];
 	private Touch initialTouch;
-	private float activeVel = -1;
+	private float activeVel = -3f;
 	private bool spawnIsDisabled = false;
 	private int iterVar = 0;
 
@@ -64,7 +64,7 @@ public class PlayerController : NetworkBehaviour {
 			FortuneWheel.transform.position = new Vector3 (spawnPosition.x + 3, spawnPosition.y - 2, 0);
 			fortuneWheelController = FortuneWheel.GetComponentInChildren<FortuneWheelController> ();
 			SpawnBlock ();
-			InvokeRepeating("SpawnPowerUp", 5f, 10f);
+			InvokeRepeating("SpawnPowerUp", 10f, 20f);
 		}
 
 	}
@@ -262,7 +262,6 @@ public class PlayerController : NetworkBehaviour {
 
 				//Spawn block if necessary based on the status player
 				if (activeBlockControl.GetSpawnNext()) {
-					this.activeVel = -1f;
 					this.activeBlockControl = null;
 					this.SpawnBlock ();
 				}
