@@ -16,10 +16,6 @@ public class ShieldController : MonoBehaviour {
 		StartCoroutine(setShieldAcitve());
 	}
 
-	void Start() {
-		StartCoroutine(setShieldAcitve());
-	}
-
 	IEnumerator setShieldAcitve() {
 		yield return new WaitForSeconds(0.2f);
 		shieldActive = true;
