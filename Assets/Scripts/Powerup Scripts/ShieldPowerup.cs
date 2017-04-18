@@ -34,8 +34,9 @@ public class ShieldPowerup : PowerUpController {
 			if (this.checkBounds (playerPosition, new Vector3(x,y,0))) {
 				Debug.Log (playerPosition.position);
 				shield = Instantiate (shield);
-				shield.transform.position = playerPosition.position + new Vector3 (0, 8, 0);
+				shield.transform.position = playerPosition.position + new Vector3 (0, 11, 0);
 				NetworkServer.Spawn (shield);
+				break;
 			}
 		}
 	}
