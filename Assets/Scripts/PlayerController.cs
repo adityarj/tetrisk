@@ -108,6 +108,8 @@ public class PlayerController : NetworkBehaviour {
 			if (!WinBarSingleton.peekInstance ()) {
 				this.CmdSpawnWinBar ();
 			}
+
+
 			NetworkServer.RegisterHandler (7999, OnReceiveEndGameMessage);
 
 			NetworkServer.RegisterHandler (7998, OnReceiveSlowMessage);
