@@ -9,9 +9,20 @@ public class ShieldController : MonoBehaviour {
 	private float transformY = 0;
 	private Transform startTransform;
 	private bool raiseFlag = false;
+	private bool shieldActive = false;
 
 	void Start() {
 		this.startTransform = gameObject.transform;
+		StartCoroutine(setShieldAcitve());
+	}
+
+	void Start() {
+		StartCoroutine(setShieldAcitve());
+	}
+
+	IEnumerator setShieldAcitve() {
+		yield return new WaitForSeconds(0.2f);
+		shieldActive = true;
 	}
 
 	void DestroyShield() {
@@ -42,16 +53,18 @@ public class ShieldController : MonoBehaviour {
 		}
 	}
 			
-
 	void OnTriggerEnter2D(Collider2D other) {
-		
-		if (!other.gameObject.CompareTag ("falling") || !other.gameObject.CompareTag("winBar")) {
+		if (shieldActive) {
+			Debug.Log ("<<Enter collision shield>>");
+			GameObject parentBlock = other.transform.parent.gameObject;
+			if (!parentBlock.CompareTag ("falling") && !parentBlock.CompareTag("winBar") && !parentBlock.CompareTag("DeadBlock")) {
+				Debug.Log(parentBlock.tag);
+				NetworkServer.Destroy (other.gameObject);
 
-			NetworkServer.Destroy (other.gameObject);
-
-			if (!this.setCountdown) {
-				Invoke ("DestroyShield", 15);
-				this.setCountdown = true;
+				if (!this.setCountdown) {
+					Invoke ("DestroyShield", 4);
+					this.setCountdown = true;
+				}
 			}
 		}
 		
