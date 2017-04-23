@@ -10,6 +10,7 @@ public class BaseElevatePowerup : PowerUpController {
 	public override void setClient (NetworkClient client) {
 		this.client = client;
 	}
+		
 
 	public override Powerup getPowerup ()
 	{

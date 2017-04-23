@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-abstract public class PowerUpController : NetworkBehaviour {
+abstract public class PowerUpController : MonoBehaviour {
 
 	private bool collected = false;
 
