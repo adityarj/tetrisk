@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class WinBarController : NetworkBehaviour {
+public class WinBarController : MonoBehaviour {
 	private Rigidbody2D rb;
 	private bool win;
 
