@@ -27,8 +27,7 @@ public class MeteorPowerUp : PowerUpController {
 	}
 
 	//Spawn the meteor at all positions that are players, but not the triggered player
-	[Command]
-	private void CmdSpawnMeteor(float x, float y) {
+	private void SpawnMeteor(float x, float y) {
 		
 		NetworkManager networkManager = NetworkManager.singleton;
 		List<Transform> playerPositions = networkManager.startPositions;
@@ -71,7 +70,7 @@ public class MeteorPowerUp : PowerUpController {
 
 	//Execute the powerup once the fortune wheel has finished spinning
 	public override void executePowerup() {
-		this.CmdSpawnMeteor (this.coord[0],this.coord[1]);
+		this.SpawnMeteor (this.coord[0],this.coord[1]);
 	}
 		
 }

@@ -24,8 +24,7 @@ public class ShieldPowerup : PowerUpController {
 	}
 
 	//Spawn the shield local to the respective player
-	[Command]
-	private void CmdSpawnShield(float x, float y) {
+	private void SpawnShield(float x, float y) {
 
 		NetworkManager networkManager = NetworkManager.singleton;
 		List<Transform> playerPositions = networkManager.startPositions;
@@ -55,6 +54,6 @@ public class ShieldPowerup : PowerUpController {
 	//Execute powerup
 	public override void executePowerup ()
 	{
-		this.CmdSpawnShield (coord[0],coord[1]);
+		this.SpawnShield (coord[0],coord[1]);
 	}
 }

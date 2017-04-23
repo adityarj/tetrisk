@@ -29,8 +29,7 @@ public class SpamBlockPowerup : PowerUpController {
 	}
 
 	//Spawn blocks local to the respective player
-	[Command]
-	private void CmdSpawnSpamBlocks(float x, float y) {
+	private void SpawnSpamBlocks(float x, float y) {
 
 		NetworkManager networkManager = NetworkManager.singleton;
 		List<Transform> playerPositions = networkManager.startPositions;
@@ -64,7 +63,7 @@ public class SpamBlockPowerup : PowerUpController {
 
 	//Execute the powerup once the fortune wheel has finished spinning
 	public override void executePowerup () {
-		CmdSpawnSpamBlocks(coord[0], coord[1]);
+		SpawnSpamBlocks(coord[0], coord[1]);
 	}
 		
 }
